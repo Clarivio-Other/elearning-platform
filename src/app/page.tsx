@@ -4,6 +4,7 @@ import {
   RotateCcw,
   Menu, X, ChevronsLeft, ChevronsRight,
   ChevronRight, LogOut,
+  FileText, ListChecks, ExternalLink, BookOpen, ScrollText, Sparkles,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -16,7 +17,7 @@ import Card from "@/components/ui/Card";
 import ModuleCard from "@/components/Dashboard/ModuleCard";
 import BadgeGrid from "@/components/Dashboard/BadgeGrid";
 
-type Section = "school" | "webinar" | "toolkit" | "community" | "risorse";
+type Section = "school" | "webinar" | "toolkit" | "risorse" | "profilo";
 
 const ThIcon = ({ src, alt, className = "h-5 w-5" }: { src: string; alt: string; className?: string }) => (
   <img src={src} alt={alt} className={`${className} object-contain`} />
@@ -26,8 +27,8 @@ const sectionTabs: { id: Section; label: string; icon: React.ReactNode; active: 
   { id: "school", label: "School", icon: <ThIcon src="/icons/computer.png" alt="School" />, active: true },
   { id: "webinar", label: "Webinar", icon: <ThIcon src="/icons/keyboard.png" alt="Webinar" />, active: false },
   { id: "toolkit", label: "Toolkit", icon: <ThIcon src="/icons/gear.png" alt="Toolkit" />, active: true },
-  { id: "community", label: "Community", icon: <ThIcon src="/icons/shield.png" alt="Community" />, active: false },
-  { id: "risorse", label: "Risorse", icon: <ThIcon src="/icons/pen.png" alt="Risorse" />, active: false },
+  { id: "risorse", label: "Risorse", icon: <ThIcon src="/icons/pen.png" alt="Risorse" />, active: true },
+  { id: "profilo", label: "Profilo", icon: <ThIcon src="/icons/award.png" alt="Profilo" />, active: true },
 ];
 
 const comingSoonData: Record<string, { title: string; description: string; items: string[] }> = {
@@ -51,16 +52,7 @@ const comingSoonData: Record<string, { title: string; description: string; items
       "Workflow automatizzati pronti all'uso",
     ],
   },
-  community: {
-    title: "Clarivio Community",
-    description: "Connettiti con altri professionisti, condividi esperienze e cresci insieme.",
-    items: [
-      "Forum di discussione tematico",
-      "Gruppi di lavoro e challenge mensili",
-      "Networking tra professionisti",
-      "Supporto peer-to-peer",
-    ],
-  },
+
   risorse: {
     title: "Clarivio Risorse",
     description: "Guide, cheat sheet, checklist e materiali di approfondimento scaricabili.",
@@ -284,15 +276,150 @@ const promptLibrary: { category: string; icon: string; prompts: { title: string;
   },
 ];
 
+const resourceLibrary: { category: string; icon: string; resources: { title: string; description: string; type: "pdf" | "link" | "checklist"; url?: string; content?: string; links?: { name: string; url: string; desc: string }[] }[] }[] = [
+  {
+    category: "Guide PDF",
+    icon: "/icons/pen.png",
+    resources: [
+      {
+        title: "Guida Completa al Prompt Engineering",
+        description: "20 pagine con tecniche avanzate, framework e best practice per scrivere prompt efficaci.",
+        type: "pdf",
+        content: "Guida completa al Prompt Engineering per professionisti.\n\nContenuti:\n1. Fondamenti del Prompt Engineering\n2. Framework RTF, RISEN, RODES\n3. Chain of Thought e ragionamento guidato\n4. Prompt per casi d'uso specifici\n5. Errori comuni da evitare\n6. Template pronti all'uso",
+      },
+      {
+        title: "Come Scegliere lo Strumento AI Giusto",
+        description: "Guida pratica per orientarsi tra ChatGPT, Claude, Gemini, Copilot e altri tool.",
+        type: "pdf",
+        content: "Guida alla scelta degli strumenti AI.\n\n1. Panoramica dei principali LLM\n2. Confronto funzionalità e prezzi\n3. Casi d'uso ideali per ogni tool\n4. Matrice decisionale\n5. Workflow consigliati",
+      },
+      {
+        title: "EU AI Act: Guida Pratica per le Aziende",
+        description: "Cosa prevede il regolamento europeo e come prepararsi alla compliance.",
+        type: "pdf",
+        content: "EU AI Act - Guida Pratica.\n\n1. Panoramica del regolamento\n2. Classificazione dei rischi\n3. Obblighi per categoria\n4. Timeline di implementazione\n5. Checklist di compliance\n6. FAQ",
+      },
+    ],
+  },
+  {
+    category: "Cheat Sheet",
+    icon: "/icons/target.png",
+    resources: [
+      {
+        title: "Prompt Cheat Sheet (A4)",
+        description: "Un 'cheat sheet' è un foglio riassuntivo con tutte le formule e framework essenziali a portata di mano. Stampalo e tienilo sulla scrivania!",
+        type: "pdf",
+        content: "📋 COS'È UN CHEAT SHEET?\nUn cheat sheet (letteralmente 'foglio per barare') è una guida rapida di riferimento che riassume le informazioni più importanti su un argomento. Stampalo in formato A4 e tienilo vicino mentre lavori!\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🎯 FRAMEWORK PER PROMPT\n\n[RTF] Ruolo + Task + Formato\n→ Il più semplice e veloce da usare\n\n[RISEN] Role + Instructions + Steps + End Goal + Narrowing\n→ Per task complessi che richiedono precisione\n\n[RODES] Role + Objective + Details + Examples + Sense Check\n→ Quando vuoi output creativi ma controllati\n\n[ABA] Ask Before Answer\n→ Chiedi all'AI di fare domande prima di rispondere\n\n[CoT] Chain of Thought\n→ 'Ragiona step by step' per problemi logici\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✨ FORMULA MAGICA (copia e personalizza):\n\nSei un [RUOLO] con [X anni di ESPERIENZA].\n[TASK da completare].\nOutput: [FORMATO desiderato].\nTono: [TONO di voce].\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n💡 TIPS VELOCI:\n• Sii specifico, non generico\n• Dai contesto e vincoli\n• Chiedi un formato preciso\n• Itera e migliora il prompt",
+      },
+      {
+        title: "Mappa Strumenti AI 2024",
+        description: "Infografica con tutti i principali tool AI organizzati per categoria d'uso.",
+        type: "pdf",
+        content: "MAPPA STRUMENTI AI 2024\n\n📝 SCRITTURA: ChatGPT, Claude, Jasper, Copy.ai\n🎨 IMMAGINI: Midjourney, DALL-E 3, Leonardo, Stable Diffusion\n🎬 VIDEO: Runway, Pika, HeyGen, Synthesia\n🔊 AUDIO: ElevenLabs, Murf, Descript\n💼 PRODUTTIVITÀ: Notion AI, Gamma, Beautiful.ai\n💻 CODING: GitHub Copilot, Cursor, Replit",
+      },
+      {
+        title: "Confronto LLM: Pro e Contro",
+        description: "Tabella comparativa dei principali Large Language Model.",
+        type: "pdf",
+        content: "CONFRONTO LLM\n\n| Modello | Pro | Contro | Ideale per |\n|---------|-----|--------|------------|\n| GPT-4o | Multimodale, veloce | Costo | Uso generale |\n| Claude 3 | Contesto lungo, etico | Meno plugin | Analisi documenti |\n| Gemini | Integrazione Google | Allucinazioni | Ricerca |\n| Llama 3 | Open source, gratis | Setup tecnico | Sviluppatori |",
+      },
+    ],
+  },
+  {
+    category: "Checklist",
+    icon: "/icons/gear.png",
+    resources: [
+      {
+        title: "Checklist Pre-Pubblicazione",
+        description: "10 controlli da fare prima di pubblicare contenuti generati con AI.",
+        type: "checklist",
+        content: "✅ CHECKLIST PRE-PUBBLICAZIONE\n\n□ Verificato accuratezza dei fatti\n□ Controllate citazioni e fonti\n□ Rimossi placeholder [ESEMPIO]\n□ Adattato il tono al brand\n□ Verificata coerenza con contenuti esistenti\n□ Controllato grammatica e refusi\n□ Ottimizzato per SEO (se applicabile)\n□ Verificata originalità (no plagiarismo)\n□ Aggiunto valore umano e insight\n□ Approvazione finale del responsabile",
+      },
+      {
+        title: "Checklist Anti-Allucinazioni",
+        description: "Come verificare e validare le informazioni generate dall'AI.",
+        type: "checklist",
+        content: "✅ CHECKLIST ANTI-ALLUCINAZIONI\n\n□ Chiesto fonti specifiche all'AI\n□ Verificate date ed eventi\n□ Cross-check con fonti autorevoli\n□ Controllati nomi e titoli\n□ Verificate statistiche e numeri\n□ Testati link (se forniti)\n□ Controllata coerenza interna\n□ Verificata plausibilità logica",
+      },
+      {
+        title: "AI Policy Audit",
+        description: "Checklist per valutare la policy AI aziendale.",
+        type: "checklist",
+        content: "✅ AI POLICY AUDIT\n\n□ Definiti i tool AI approvati\n□ Stabilito chi può usare AI (ruoli)\n□ Definiti dati che NON vanno inseriti\n□ Processo di revisione contenuti AI\n□ Training obbligatorio completato\n□ Clausole contrattuali aggiornate\n□ Informativa privacy aggiornata\n□ Processo di escalation definito\n□ Monitoraggio e audit periodico\n□ Compliance EU AI Act verificata",
+      },
+    ],
+  },
+  {
+    category: "Link Curati",
+    icon: "/icons/magnifier.png",
+    resources: [
+      {
+        title: "Newsletter AI Consigliate",
+        description: "Le migliori newsletter per restare aggiornati sul mondo AI.",
+        type: "link",
+        content: "📬 NEWSLETTER AI CONSIGLIATE",
+        links: [
+          { name: "The Rundown AI", url: "https://www.therundown.ai/", desc: "Notizie quotidiane" },
+          { name: "Superhuman", url: "https://www.superhuman.ai/", desc: "AI per produttività" },
+          { name: "Ben's Bites", url: "https://bensbites.beehiiv.com/", desc: "Panoramica giornaliera" },
+          { name: "AI Tool Report", url: "https://aitoolreport.beehiiv.com/", desc: "Nuovi strumenti" },
+          { name: "Prompt Engineering Daily", url: "https://www.neatprompts.com/", desc: "Tecniche prompt" },
+          { name: "The Neuron", url: "https://www.theneurondaily.com/", desc: "Analisi approfondite" },
+        ],
+      },
+      {
+        title: "Corsi Gratuiti Consigliati",
+        description: "Risorse formative gratuite di alta qualità.",
+        type: "link",
+        content: "🎓 CORSI GRATUITI AI",
+        links: [
+          { name: "Google AI Essentials", url: "https://www.coursera.org/learn/google-ai-essentials", desc: "Coursera" },
+          { name: "Prompt Engineering", url: "https://www.deeplearning.ai/short-courses/chatgpt-prompt-engineering-for-developers/", desc: "DeepLearning.AI" },
+          { name: "Generative AI for Everyone", url: "https://www.coursera.org/learn/generative-ai-for-everyone", desc: "Coursera - Andrew Ng" },
+          { name: "Microsoft AI Skills", url: "https://learn.microsoft.com/en-us/training/topics/artificial-intelligence", desc: "Microsoft Learn" },
+          { name: "Introduction to Generative AI", url: "https://www.cloudskillsboost.google/course_templates/536", desc: "Google Cloud" },
+          { name: "AI Fundamentals", url: "https://skillsbuild.org/adult-learners/explore-learning/artificial-intelligence", desc: "IBM SkillsBuild" },
+        ],
+      },
+      {
+        title: "Tool AI Essenziali",
+        description: "I migliori strumenti AI da provare subito.",
+        type: "link",
+        content: "🛠️ TOOL AI ESSENZIALI",
+        links: [
+          { name: "ChatGPT", url: "https://chat.openai.com/", desc: "OpenAI - Chatbot" },
+          { name: "Claude", url: "https://claude.ai/", desc: "Anthropic - Assistente AI" },
+          { name: "Perplexity", url: "https://www.perplexity.ai/", desc: "Ricerca AI" },
+          { name: "Midjourney", url: "https://www.midjourney.com/", desc: "Generazione immagini" },
+          { name: "Gamma", url: "https://gamma.app/", desc: "Presentazioni AI" },
+          { name: "ElevenLabs", url: "https://elevenlabs.io/", desc: "Sintesi vocale" },
+        ],
+      },
+    ],
+  },
+];
+
 export default function DashboardPage() {
   const { progress, setUserName, reset, allModulesCompleted } = useLearning();
-  const { profile, logout } = useAuth();
+  const { profile, updateProfile, logout } = useAuth();
   const router = useRouter();
   const [activeSection, setActiveSection] = useState<Section>("school");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedPromptCat, setSelectedPromptCat] = useState(0);
   const [copiedPrompt, setCopiedPrompt] = useState<string | null>(null);
+  const [selectedResourceCat, setSelectedResourceCat] = useState(0);
+  const [copiedResource, setCopiedResource] = useState<string | null>(null);
+  const [expandedResource, setExpandedResource] = useState<string | null>(null);
+  const [editingProfile, setEditingProfile] = useState(false);
+  const [profileForm, setProfileForm] = useState({
+    nome: "",
+    cognome: "",
+    email: "",
+    telefono: "",
+    ruolo: "",
+    azienda: "",
+  });
 
   // Sync userName from profile
   useEffect(() => {
@@ -382,7 +509,14 @@ export default function DashboardPage() {
       { name: "Luca M.", xp: 140 },
       { name: "Sara B.", xp: 110 },
     ];
-    const you = { name: progress.userName || "Tu", xp: progress.totalCredits, isYou: true };
+    // Formatta nome: "Mario Rossi" → "Mario R."
+    const formatName = (fullName: string) => {
+      const parts = fullName.trim().split(/\s+/);
+      if (parts.length < 2) return fullName;
+      return `${parts[0]} ${parts[1].charAt(0).toUpperCase()}.`;
+    };
+    const displayName = progress.userName ? formatName(progress.userName) : "Tu";
+    const you = { name: displayName, xp: progress.totalCredits, isYou: true };
     const all = [...fakeUsers, you].sort((a, b) => b.xp - a.xp).slice(0, 6);
     return all.map((u, i) => ({ ...u, rank: i + 1, isYou: "isYou" in u }));
   }, [progress.totalCredits, progress.userName]);
@@ -444,18 +578,10 @@ export default function DashboardPage() {
         {/* Sidebar header */}
         <div className={`flex items-center gap-3 p-4 border-b border-border ${sidebarCollapsed ? "lg:justify-center lg:px-2" : ""}`}>
           <img
-            src="/icons/robot.png"
+            src="/logo/Logo_clarivio.svg"
             alt="Clarivio"
-            className="h-9 w-9 object-contain shrink-0"
+            className={`transition-all duration-300 ${sidebarCollapsed ? "h-8 w-8" : "h-8 w-auto"}`}
           />
-          <div className={`overflow-hidden transition-all duration-300 ${sidebarCollapsed ? "lg:w-0 lg:opacity-0" : "lg:w-auto lg:opacity-100"}`}>
-            <h1 className="text-lg font-bold tracking-tight leading-none">
-              Clarivio<span className="text-viola">.</span>
-            </h1>
-            <p className="text-[10px] text-foreground-muted leading-tight mt-0.5">
-              Community & Learning
-            </p>
-          </div>
           {/* Mobile close */}
           <button
             onClick={() => setSidebarOpen(false)}
@@ -523,9 +649,7 @@ export default function DashboardPage() {
           <button onClick={() => setSidebarOpen(true)} className="cursor-pointer text-foreground">
             <Menu className="h-5 w-5" />
           </button>
-          <span className="font-bold text-sm">
-            Clarivio<span className="text-viola">.</span>
-          </span>
+          <img src="/logo/Logo_clarivio.svg" alt="Clarivio" className="h-6 w-auto" />
           <span className="text-xs text-foreground-muted">
             {sectionTabs.find((s) => s.id === activeSection)?.label}
           </span>
@@ -669,7 +793,7 @@ export default function DashboardPage() {
 
                   {allModulesCompleted && (
                     <Button onClick={() => router.push("/attestato")} className="mt-2 w-full justify-center">
-                      <ThIcon src="/icons/award.png" alt="" className="h-4 w-4" />
+                      <img src="/icons/award.png" alt="" className="h-4 w-4 object-contain" />
                       Visualizza Attestato
                     </Button>
                   )}
@@ -758,29 +882,6 @@ export default function DashboardPage() {
                   </Card>
                 )}
 
-                {/* ── Leaderboard ── */}
-                <Card className="p-4 sm:p-5 space-y-3">
-                  <div className="flex items-center gap-2">
-                    <img src="/icons/medal.png" alt="" className="h-6 w-6 object-contain" />
-                    <h2 className="font-semibold text-base sm:text-lg">Classifica</h2>
-                  </div>
-                  <div className="space-y-1.5">
-                    {leaderboard.map((u) => (
-                      <div
-                        key={u.rank}
-                        className={`flex items-center gap-3 rounded-xl px-3 py-2 text-sm transition-colors ${u.isYou ? "bg-viola/10 ring-1 ring-viola/20" : "hover:bg-surface"}`}
-                      >
-                        <span className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-lg text-xs font-bold ${u.rank <= 3 ? "bg-warning/20 text-warning" : "bg-surface-alt text-foreground-muted"}`}>
-                          {u.rank}
-                        </span>
-                        <span className={`flex-1 font-medium truncate ${u.isYou ? "text-viola" : ""}`}>
-                          {u.name} {u.isYou && <span className="text-xs text-viola/60">(tu)</span>}
-                        </span>
-                        <span className="text-xs font-bold text-foreground-muted">{u.xp} XP</span>
-                      </div>
-                    ))}
-                  </div>
-                </Card>
 
                 {/* ── Percorso Formativo con Agenda ── */}
                 <div className="space-y-3">
@@ -962,13 +1063,462 @@ export default function DashboardPage() {
               </div>
             )}
 
+            {/* ═══════════ RISORSE LIBRARY ═══════════ */}
+            {activeSection === "risorse" && (
+              <div className="space-y-6">
+                {/* Header */}
+                <div className="text-center sm:text-left">
+                  <div className="flex items-center gap-3 mb-2 justify-center sm:justify-start">
+                    <img src="/icons/pen.png" alt="" className="h-8 w-8 object-contain" />
+                    <h2 className="text-xl sm:text-2xl font-bold">Risorse e Materiali</h2>
+                  </div>
+                  <p className="text-sm text-foreground-muted max-w-xl">
+                    Guide, cheat sheet, checklist e link curati per il tuo percorso formativo.
+                  </p>
+                </div>
+                
+                {/* Category tabs */}
+                <div className="flex flex-wrap gap-2">
+                  {resourceLibrary.map((cat, i) => (
+                    <button
+                      key={cat.category}
+                      onClick={() => { setSelectedResourceCat(i); setExpandedResource(null); }}
+                      className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-medium transition-all ${
+                        selectedResourceCat === i
+                          ? "bg-viola text-white shadow-sm"
+                          : "bg-surface border border-border text-foreground-muted hover:bg-surface-alt hover:border-viola/30"
+                      }`}
+                    >
+                      <img src={cat.icon} alt="" className="h-4 w-4 object-contain" />
+                      {cat.category}
+                    </button>
+                  ))}
+                </div>
+
+                {/* Grid */}
+                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                  {resourceLibrary[selectedResourceCat].resources.map((r) => (
+                    <Card
+                      key={r.title}
+                      className="p-5 cursor-pointer transition-all hover:border-viola/50 hover:shadow-md group"
+                      onClick={() => setExpandedResource(r.title)}
+                    >
+                      {/* Icon */}
+                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${
+                        r.type === "pdf" ? "bg-red-500/10" : 
+                        r.type === "checklist" ? "bg-green-500/10" : "bg-blue-500/10"
+                      }`}>
+                        {r.type === "pdf" && <FileText className="h-5 w-5 text-red-500" />}
+                        {r.type === "checklist" && <ListChecks className="h-5 w-5 text-green-500" />}
+                        {r.type === "link" && <ExternalLink className="h-5 w-5 text-blue-500" />}
+                      </div>
+                      
+                      {/* Badge */}
+                      <span className={`inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md font-semibold mb-2 ${
+                        r.type === "pdf" ? "bg-red-500/10 text-red-600" :
+                        r.type === "checklist" ? "bg-green-500/10 text-green-600" : "bg-blue-500/10 text-blue-600"
+                      }`}>
+                        {r.type === "pdf" ? "Guida" : r.type === "checklist" ? "Checklist" : "Link"}
+                      </span>
+                      
+                      {/* Content */}
+                      <h3 className="font-semibold text-sm mb-1.5 group-hover:text-viola transition-colors line-clamp-2">
+                        {r.title}
+                      </h3>
+                      <p className="text-xs text-foreground-muted line-clamp-2 mb-3">
+                        {r.description}
+                      </p>
+                      
+                      {/* Footer */}
+                      <div className="flex items-center justify-between pt-3 border-t border-border/50">
+                        <span className="text-[11px] text-foreground-muted">
+                          {r.links ? `${r.links.length} link` : "Leggi ora"}
+                        </span>
+                        <ChevronRight className="h-4 w-4 text-foreground-muted group-hover:text-viola group-hover:translate-x-0.5 transition-all" />
+                      </div>
+                    </Card>
+                  ))}
+                </div>
+
+                {/* Modal */}
+                {expandedResource && (
+                  <div 
+                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" 
+                    onClick={() => setExpandedResource(null)}
+                  >
+                    <Card 
+                      className="w-full max-w-2xl max-h-[85vh] overflow-hidden" 
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      {(() => {
+                        const r = resourceLibrary[selectedResourceCat].resources.find(res => res.title === expandedResource);
+                        if (!r) return null;
+                        return (
+                          <>
+                            {/* Header */}
+                            <div className="p-5 sm:p-6 border-b border-border">
+                              <div className="flex items-start gap-4">
+                                <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
+                                  r.type === "pdf" ? "bg-red-500/10" : 
+                                  r.type === "checklist" ? "bg-green-500/10" : "bg-blue-500/10"
+                                }`}>
+                                  {r.type === "pdf" && <FileText className="h-6 w-6 text-red-500" />}
+                                  {r.type === "checklist" && <ListChecks className="h-6 w-6 text-green-500" />}
+                                  {r.type === "link" && <ExternalLink className="h-6 w-6 text-blue-500" />}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <span className={`inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md font-semibold mb-1 ${
+                                    r.type === "pdf" ? "bg-red-500/10 text-red-600" :
+                                    r.type === "checklist" ? "bg-green-500/10 text-green-600" : "bg-blue-500/10 text-blue-600"
+                                  }`}>
+                                    {r.type === "pdf" ? "Guida" : r.type === "checklist" ? "Checklist" : "Link Curati"}
+                                  </span>
+                                  <h3 className="text-lg font-bold">{r.title}</h3>
+                                  <p className="text-sm text-foreground-muted mt-1">{r.description}</p>
+                                </div>
+                                <button
+                                  onClick={() => setExpandedResource(null)}
+                                  className="p-2 rounded-lg hover:bg-surface-alt transition-colors"
+                                >
+                                  <X className="h-5 w-5 text-foreground-muted" />
+                                </button>
+                              </div>
+                            </div>
+                            
+                            {/* Content */}
+                            <div className="p-5 sm:p-6 overflow-y-auto max-h-[calc(85vh-200px)]">
+                              {r.content && !r.links && (
+                                <div className="bg-surface-alt rounded-xl p-4 border border-border">
+                                  <pre className="text-sm leading-relaxed whitespace-pre-wrap font-sans">
+                                    {r.content}
+                                  </pre>
+                                </div>
+                              )}
+
+                              {r.links && (
+                                <div className="space-y-3">
+                                  <p className="text-sm text-foreground-muted mb-4">{r.content}</p>
+                                  {r.links.map((link) => (
+                                    <a
+                                      key={link.name}
+                                      href={link.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="flex items-center gap-3 p-3 rounded-xl bg-surface border border-border hover:border-viola/50 hover:bg-viola/5 transition-all group"
+                                    >
+                                      <div className="w-10 h-10 rounded-lg bg-viola/10 flex items-center justify-center shrink-0 group-hover:bg-viola/20 transition-colors">
+                                        <ExternalLink className="h-5 w-5 text-viola" />
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <p className="font-semibold text-sm group-hover:text-viola transition-colors">{link.name}</p>
+                                        <p className="text-xs text-foreground-muted truncate">{link.desc}</p>
+                                      </div>
+                                      <ChevronRight className="h-4 w-4 text-foreground-muted group-hover:text-viola transition-colors" />
+                                    </a>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Footer */}
+                            <div className="p-5 sm:p-6 pt-0 border-t border-border mt-4">
+                              <button
+                                onClick={() => {
+                                  if (r.content) {
+                                    navigator.clipboard.writeText(r.content);
+                                    setCopiedResource(r.title);
+                                    setTimeout(() => setCopiedResource(null), 2000);
+                                  }
+                                }}
+                                className={`w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
+                                  copiedResource === r.title
+                                    ? "bg-success/10 text-success"
+                                    : "bg-viola text-white hover:bg-viola/90"
+                                }`}
+                              >
+                                {copiedResource === r.title ? (
+                                  <>
+                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    Copiato negli appunti!
+                                  </>
+                                ) : (
+                                  <>
+                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                    </svg>
+                                    Copia contenuto
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </>
+                        );
+                      })()}
+                    </Card>
+                  </div>
+                )} 
+              </div>
+            )}
+
+            {/* ═══════════ PROFILO ═══════════ */}
+            {activeSection === "profilo" && (
+              <div className="max-w-2xl mx-auto space-y-8">
+                {/* Profile Header */}
+                <div className="text-center">
+                  <div className="relative inline-block mb-4">
+                    {profile.avatar ? (
+                      <img
+                        src={profile.avatar}
+                        alt="Avatar"
+                        className="h-28 w-28 rounded-full object-cover ring-4 ring-viola/20"
+                      />
+                    ) : (
+                      <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-viola to-viola/70 text-white text-4xl font-bold ring-4 ring-viola/20">
+                        {profile.nome[0]}{profile.cognome[0]}
+                      </div>
+                    )}
+                    <label className="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center bg-viola rounded-full cursor-pointer hover:bg-viola/90 transition-colors shadow-lg">
+                      <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                      </svg>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onloadend = () => {
+                              const base64 = reader.result as string;
+                              updateProfile({ avatar: base64 });
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                      />
+                    </label>
+                  </div>
+                  <h2 className="text-2xl font-bold">{profile.nome} {profile.cognome}</h2>
+                  <p className="text-foreground-muted">{profile.ruolo} {profile.azienda && `@ ${profile.azienda}`}</p>
+                  <p className="text-xs text-foreground-muted mt-2">
+                    Iscritto dal {new Date(profile.registeredAt).toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' })}
+                  </p>
+                </div>
+
+                {/* Stats Row */}
+                <div className="grid grid-cols-4 gap-3">
+                  <div className="text-center p-4 rounded-2xl bg-surface">
+                    <p className="text-2xl font-bold text-viola">{level}</p>
+                    <p className="text-xs text-foreground-muted">Livello</p>
+                  </div>
+                  <div className="text-center p-4 rounded-2xl bg-surface">
+                    <p className="text-2xl font-bold">{progress.totalCredits}</p>
+                    <p className="text-xs text-foreground-muted">Crediti</p>
+                  </div>
+                  <div className="text-center p-4 rounded-2xl bg-surface">
+                    <p className="text-2xl font-bold">{completedCount}/{modules.length}</p>
+                    <p className="text-xs text-foreground-muted">Moduli</p>
+                  </div>
+                  <div className="text-center p-4 rounded-2xl bg-surface">
+                    <p className="text-2xl font-bold">{progress.badges.length}</p>
+                    <p className="text-xs text-foreground-muted">Badge</p>
+                  </div>
+                </div>
+
+                {/* Profile Form */}
+                <Card className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h3 className="text-lg font-semibold">Informazioni personali</h3>
+                    <button
+                      onClick={() => {
+                        if (editingProfile) {
+                          setEditingProfile(false);
+                        } else {
+                          setProfileForm({
+                            nome: profile.nome,
+                            cognome: profile.cognome,
+                            email: profile.email,
+                            telefono: profile.telefono,
+                            ruolo: profile.ruolo,
+                            azienda: profile.azienda,
+                          });
+                          setEditingProfile(true);
+                        }
+                      }}
+                      className={`px-4 py-2 rounded-xl text-sm font-medium transition-all ${
+                        editingProfile
+                          ? "bg-foreground-muted/10 text-foreground-muted hover:bg-foreground-muted/20"
+                          : "bg-viola text-white hover:bg-viola/90"
+                      }`}
+                    >
+                      {editingProfile ? "Annulla" : "Modifica"}
+                    </button>
+                  </div>
+
+                  {editingProfile ? (
+                    <form
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        updateProfile(profileForm);
+                        setUserName(`${profileForm.nome} ${profileForm.cognome}`);
+                        setEditingProfile(false);
+                      }}
+                      className="space-y-4"
+                    >
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="block text-sm font-medium mb-1.5">Nome</label>
+                          <input
+                            type="text"
+                            value={profileForm.nome}
+                            onChange={(e) => setProfileForm({ ...profileForm, nome: e.target.value })}
+                            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1.5">Cognome</label>
+                          <input
+                            type="text"
+                            value={profileForm.cognome}
+                            onChange={(e) => setProfileForm({ ...profileForm, cognome: e.target.value })}
+                            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1.5">Email</label>
+                        <input
+                          type="email"
+                          value={profileForm.email}
+                          onChange={(e) => setProfileForm({ ...profileForm, email: e.target.value })}
+                          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                          required
+                        />
+                      </div>
+                      <div>
+                        <label className="block text-sm font-medium mb-1.5">Telefono</label>
+                        <input
+                          type="tel"
+                          value={profileForm.telefono}
+                          onChange={(e) => setProfileForm({ ...profileForm, telefono: e.target.value })}
+                          className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                        />
+                      </div>
+                      <div className="grid gap-4 sm:grid-cols-2">
+                        <div>
+                          <label className="block text-sm font-medium mb-1.5">Ruolo</label>
+                          <input
+                            type="text"
+                            value={profileForm.ruolo}
+                            onChange={(e) => setProfileForm({ ...profileForm, ruolo: e.target.value })}
+                            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                            placeholder="es. Marketing Manager"
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium mb-1.5">Azienda</label>
+                          <input
+                            type="text"
+                            value={profileForm.azienda}
+                            onChange={(e) => setProfileForm({ ...profileForm, azienda: e.target.value })}
+                            className="w-full rounded-xl border border-border bg-surface px-4 py-3 text-sm focus:border-viola focus:outline-none focus:ring-2 focus:ring-viola/20"
+                            placeholder="es. Acme Inc."
+                          />
+                        </div>
+                      </div>
+                      <button
+                        type="submit"
+                        className="w-full bg-viola text-white rounded-xl px-4 py-3 text-sm font-medium hover:bg-viola/90 transition-colors"
+                      >
+                        Salva modifiche
+                      </button>
+                    </form>
+                  ) : (
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between py-3 border-b border-border">
+                        <span className="text-sm text-foreground-muted">Email</span>
+                        <span className="text-sm font-medium">{profile.email}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-3 border-b border-border">
+                        <span className="text-sm text-foreground-muted">Telefono</span>
+                        <span className="text-sm font-medium">{profile.telefono || "—"}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-3 border-b border-border">
+                        <span className="text-sm text-foreground-muted">Ruolo</span>
+                        <span className="text-sm font-medium">{profile.ruolo || "—"}</span>
+                      </div>
+                      <div className="flex items-center justify-between py-3">
+                        <span className="text-sm text-foreground-muted">Azienda</span>
+                        <span className="text-sm font-medium">{profile.azienda || "—"}</span>
+                      </div>
+                    </div>
+                  )}
+                </Card>
+
+                {/* Privacy */}
+                <Card className="p-6">
+                  <h3 className="text-lg font-semibold mb-4">Consensi privacy</h3>
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between py-2">
+                      <span className="text-sm text-foreground-muted">Privacy policy</span>
+                      <span className="text-sm text-green-600 font-medium">✓ Accettata</span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span className="text-sm text-foreground-muted">Comunicazioni marketing</span>
+                      <span className={`text-sm font-medium ${profile.marketingConsent ? "text-green-600" : "text-foreground-muted"}`}>
+                        {profile.marketingConsent ? "✓ Accettato" : "Non accettato"}
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between py-2">
+                      <span className="text-sm text-foreground-muted">Profilazione</span>
+                      <span className={`text-sm font-medium ${profile.profilingConsent ? "text-green-600" : "text-foreground-muted"}`}>
+                        {profile.profilingConsent ? "✓ Accettata" : "Non accettata"}
+                      </span>
+                    </div>
+                  </div>
+                </Card>
+
+                {/* Actions */}
+                <div className="space-y-3">
+                  <button
+                    onClick={() => {
+                      if (confirm("Sei sicuro di voler azzerare tutti i progressi del corso?")) {
+                        reset();
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm text-foreground-muted bg-surface hover:bg-surface-alt transition-colors"
+                  >
+                    <RotateCcw className="h-4 w-4" />
+                    Azzera progressi corso
+                  </button>
+                  <button
+                    onClick={() => {
+                      if (confirm("Sei sicuro di voler uscire? Dovrai registrarti di nuovo.")) {
+                        logout();
+                      }
+                    }}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-xl text-sm text-danger bg-danger/5 hover:bg-danger/10 transition-colors"
+                  >
+                    <LogOut className="h-4 w-4" />
+                    Esci dall'account
+                  </button>
+                </div>
+              </div>
+            )}
+
             {/* ═══════════ COMING SOON SECTIONS ═══════════ */}
-            {activeSection !== "school" && activeSection !== "toolkit" && comingSoonData[activeSection] && (
+            {activeSection !== "school" && activeSection !== "toolkit" && activeSection !== "risorse" && activeSection !== "profilo" && comingSoonData[activeSection] && (
               <div className="space-y-6">
                 <div className="text-center py-8 sm:py-12">
                   {/* Lock badge */}
                   <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-viola/10 to-viola/5 ring-1 ring-viola/20">
-                    <img src="/icons/shield.png" alt="Coming soon" className="h-10 w-10 object-contain opacity-60" />
+                    <img src="/icons/shield.png" alt="" className="h-10 w-10 object-contain opacity-60" />
                   </div>
 
                   <h2 className="text-xl sm:text-2xl font-bold mb-2">

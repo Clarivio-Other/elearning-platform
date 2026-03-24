@@ -113,7 +113,7 @@ export default function CertificatePage() {
             {/* Description */}
             <p className="mx-auto max-w-lg text-foreground-muted">
               Per aver completato con successo tutti i moduli del percorso formativo
-              della piattaforma LearnUp, dimostrando impegno e competenza.
+              Clarivio School, dimostrando impegno e competenza nell&apos;uso dell&apos;AI generativa.
             </p>
 
             {/* Modules completed */}
@@ -149,9 +149,12 @@ export default function CertificatePage() {
             </div>
 
             {/* Platform name */}
-            <p className="text-xs text-foreground-muted tracking-widest uppercase">
-              LearnUp — Piattaforma E-Learning
-            </p>
+            <div className="flex flex-col items-center gap-2">
+              <img src="/logo/Logo_clarivio.svg" alt="Clarivio" className="h-6 opacity-60" />
+              <p className="text-xs text-foreground-muted tracking-widest uppercase">
+                Clarivio School — AI Generativa per Professionisti
+              </p>
+            </div>
           </div>
         </div>
       </div>

@@ -13,6 +13,7 @@ export interface UserProfile {
   telefono: string;
   ruolo: string;
   azienda: string;
+  avatar?: string;
   registeredAt: string;
   privacyAccepted: boolean;
   privacyAcceptedAt: string;

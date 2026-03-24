@@ -68,6 +68,10 @@ export const modules: Module[] = [
       "Il Fenomeno delle Allucinazioni",
       "AI Generativa vs AI Discriminativa",
       "Multimodalità: Oltre il Testo",
+      "Mixture of Experts (MoE): Architetture Ibride",
+      "Retrieval-Augmented Generation (RAG)",
+      "AI Agenti: Dall'Assistenza all'Autonomia",
+      "Small Language Models (SLM)",
       "Il Ruolo dell'Essere Umano",
       "Impatto Economico e Sociale",
     ],
@@ -246,6 +250,90 @@ I modelli più recenti sono **multimodali**: possono elaborare e generare divers
 - **Testo → Audio**: generazione di voce e musica (ElevenLabs, Suno)
 - **Testo → Video**: generazione di clip video (Sora, Runway)
 - **Testo → Codice**: generazione e debug di codice (GitHub Copilot)
+
+### Mixture of Experts (MoE): Architetture Ibride
+
+Una delle innovazioni più importanti nelle architetture AI recenti è il **Mixture of Experts (MoE)**. Invece di un singolo modello monolitico, un MoE combina più "esperti" specializzati, attivando solo quelli rilevanti per ogni richiesta.
+
+Come funziona:
+- Il modello contiene diversi sotto-modelli ("esperti") specializzati in compiti diversi
+- Un **router** (gating network) decide quali esperti attivare per ogni token/query
+- Solo una frazione degli esperti viene attivata per ogni inferenza (tipicamente 2 su 8)
+- Questo permette modelli con molti più parametri totali ma costi computazionali contenuti
+
+Esempi di modelli MoE:
+- **Mixtral 8x7B** (Mistral): 8 esperti da 7B, ne attiva 2 alla volta → prestazioni di un modello 45B con costi di un 14B
+- **GPT-4**: si ritiene utilizzi un'architettura MoE (non confermato ufficialmente)
+- **Grok** (xAI): architettura MoE dichiarata
+
+Vantaggi del MoE:
+- Maggiore efficienza computazionale
+- Specializzazione: ogni esperto può eccellere in un dominio
+- Scalabilità: è possibile aggiungere nuovi esperti senza riaddestramento completo
+
+### Retrieval-Augmented Generation (RAG)
+
+Il **RAG (Retrieval-Augmented Generation)** è una tecnica che combina la generazione di testo con il recupero di informazioni da una base di conoscenza esterna. Risolve uno dei problemi principali degli LLM: la conoscenza "congelata" alla data di training.
+
+Come funziona:
+1. **Indicizzazione**: i documenti vengono suddivisi in chunk e convertiti in embedding vettoriali
+2. **Retrieval**: quando arriva una query, viene convertita in embedding e confrontata con i documenti
+3. **Augmentation**: i chunk più rilevanti vengono aggiunti al prompt come contesto
+4. **Generation**: il modello genera la risposta basandosi sia sulla sua conoscenza che sui documenti recuperati
+
+Vantaggi del RAG:
+- **Conoscenza aggiornata**: può accedere a documenti recenti non presenti nel training
+- **Citazione delle fonti**: può indicare da dove provengono le informazioni
+- **Riduzione delle allucinazioni**: il modello si basa su fatti concreti
+- **Personalizzazione**: può lavorare su documenti aziendali specifici
+
+Applicazioni pratiche:
+- Chatbot aziendali che rispondono basandosi sulla documentazione interna
+- Assistenti legali che citano articoli di legge specifici
+- Supporto clienti che accede a manuali e FAQ aggiornati
+
+### AI Agenti: Dall'Assistenza all'Autonomia
+
+Gli **AI Agents** rappresentano l'evoluzione dei chatbot: sistemi AI capaci di pianificare, eseguire azioni e raggiungere obiettivi in modo autonomo, utilizzando strumenti esterni.
+
+Caratteristiche distintive:
+- **Pianificazione**: scompongono obiettivi complessi in sotto-task
+- **Uso di strumenti**: possono navigare il web, eseguire codice, interagire con API
+- **Memoria**: mantengono il contesto tra le sessioni
+- **Autonomia**: prendono decisioni senza intervento umano continuo
+
+Esempi di agenti AI:
+- **Computer Use** (Anthropic): Claude può controllare il mouse e la tastiera del computer
+- **Operator** (OpenAI): agente che naviga il web ed esegue task
+- **Devin** (Cognition): agente software engineer che scrive codice autonomamente
+- **AutoGPT**: framework open source per creare agenti autonomi
+
+Architettura tipica di un agente:
+1. **Percezione**: riceve input dall'ambiente (testo, immagini, dati)
+2. **Ragionamento**: analizza la situazione e pianifica le azioni
+3. **Azione**: esegue operazioni tramite strumenti (API, browser, terminale)
+4. **Feedback**: osserva i risultati e adatta il piano
+
+### Small Language Models (SLM)
+
+Controtrend rispetto alla corsa ai modelli sempre più grandi, gli **Small Language Models** (SLM) dimostrano che "piccolo" può essere efficiente:
+
+- **Phi-3** (Microsoft): modelli da 3.8B parametri con prestazioni sorprendenti
+- **Gemma 2** (Google): modelli da 2B a 9B ottimizzati per dispositivi
+- **Qwen2** (Alibaba): modelli compatti ma performanti
+
+Vantaggi degli SLM:
+- Eseguibili su dispositivi locali (laptop, smartphone)
+- Latenza ridotta e risposte immediate
+- Privacy totale: i dati non lasciano il dispositivo
+- Costi operativi molto inferiori
+- Ideali per task specifici e ben definiti
+
+Quando scegliere un SLM:
+- Task ripetitivi e prevedibili (classificazione, estrazione dati)
+- Contesti con vincoli di privacy stringenti
+- Applicazioni embedded o edge computing
+- Budget limitato per inferenza
 
 ### Il Ruolo dell'Essere Umano
 
@@ -448,8 +536,60 @@ Secondo McKinsey Global Institute, l'AI generativa potrebbe aggiungere tra 2,6 e
         correctIndex: 2,
         credits: 5,
       },
+      {
+        id: "q1-15",
+        question:
+          "Cos'è l'architettura Mixture of Experts (MoE)?",
+        options: [
+          "Un modello che richiede più esperti umani per funzionare",
+          "Un sistema che combina più sotto-modelli specializzati, attivandone solo alcuni per ogni richiesta",
+          "Un metodo per addestrare modelli con dati provenienti da diversi Paesi",
+          "Un'interfaccia che collega più chatbot diversi",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q1-16",
+        question:
+          "Qual è il principale vantaggio del RAG (Retrieval-Augmented Generation)?",
+        options: [
+          "Genera risposte più veloci eliminando la necessità di contesto",
+          "Permette di accedere a documenti esterni aggiornati, riducendo le allucinazioni e citando le fonti",
+          "Sostituisce completamente la necessità di addestrare modelli",
+          "Funziona solo con immagini e video, non con testo",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q1-17",
+        question:
+          "Cosa distingue un AI Agent da un chatbot tradizionale?",
+        options: [
+          "L'AI Agent risponde solo in inglese",
+          "L'AI Agent può pianificare, usare strumenti esterni ed eseguire azioni autonomamente",
+          "L'AI Agent non ha bisogno di prompt",
+          "L'AI Agent funziona solo offline",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q1-18",
+        question:
+          "Qual è il vantaggio principale degli Small Language Models (SLM)?",
+        options: [
+          "Sono sempre più accurati dei modelli grandi",
+          "Possono essere eseguiti localmente, garantendo privacy e bassa latenza",
+          "Non richiedono alcun prompt per funzionare",
+          "Possono generare solo testo, non immagini",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 70,
+    maxCredits: 90,
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -467,9 +607,13 @@ Secondo McKinsey Global Institute, l'AI generativa potrebbe aggiungere tra 2,6 e
       "Generazione Video",
       "Generazione Audio e Musica",
       "Generazione di Codice",
+      "AI Agents e Automazione",
+      "Workflow Automation con AI",
       "Piattaforme Aggregatrici",
       "La Finestra di Contesto",
       "Modelli Proprietari vs Open Source",
+      "Strumenti di Ricerca AI",
+      "AI per la Produttività Personale",
       "Come Scegliere lo Strumento Giusto",
     ],
     content: `
@@ -551,6 +695,48 @@ L'AI ha trasformato anche il modo in cui si sviluppa software:
 - **Replit Agent**: piattaforma che genera intere applicazioni web da una descrizione in linguaggio naturale.
 - **v0 (Vercel)**: genera interfacce utente React/Next.js da prompt testuali.
 
+### AI Agents e Automazione
+
+Gli **AI Agents** rappresentano la prossima frontiera: sistemi capaci di eseguire task complessi in autonomia.
+
+**Agenti per il Web**:
+- **Operator** (OpenAI): naviga siti web, compila form, effettua acquisti
+- **Computer Use** (Claude): controlla mouse e tastiera per interagire con qualsiasi software
+- **Browserbase / Browserless**: infrastruttura per far navigare agenti AI
+
+**Agenti per il Lavoro**:
+- **Devin** (Cognition): "software engineer AI" che scrive, testa e deploya codice
+- **Sweep**: agente che risolve bug e implementa feature da issue GitHub
+- **Lindy**: crea agenti personalizzati per task ripetitivi (email, scheduling, ricerca)
+
+**Agenti Open Source**:
+- **AutoGPT**: framework per creare agenti autonomi con obiettivi definiti
+- **BabyAGI**: agente semplice che scompone task e li esegue iterativamente
+- **CrewAI**: framework per orchestrare team di agenti AI collaborativi
+- **LangChain Agents**: integrazione di agenti nel framework LangChain
+
+### Workflow Automation con AI
+
+L'integrazione dell'AI nei workflow automatizzati moltiplica la produttività:
+
+**Piattaforme No-Code**:
+- **Zapier + AI**: automazioni che usano GPT per processare dati, scrivere email, classificare ticket
+- **Make (ex Integromat)**: workflow visivi con moduli AI integrati
+- **n8n**: alternativa open source con nodi per ChatGPT, Claude, modelli locali
+
+**Casi d'uso comuni**:
+- Email in arrivo → AI classifica per urgenza → smista al team corretto
+- Nuovo lead nel CRM → AI genera email di benvenuto personalizzata
+- Menzione social → AI analizza sentiment → alert se negativo
+- Documento caricato → AI estrae dati chiave → popola database
+
+**Costruire Workflow RAG**:
+Piattaforme come **Flowise**, **LangFlow** e **Dify** permettono di creare sistemi RAG visualmente:
+1. Carica documenti (PDF, Word, web pages)
+2. Indicizza in un vector database (Pinecone, Weaviate, Chroma)
+3. Collega a un LLM per rispondere basandosi sui documenti
+4. Esponi come chatbot o API
+
 ### Piattaforme Aggregatrici
 
 Strumenti che permettono di accedere a più modelli da un'unica interfaccia:
@@ -593,6 +779,42 @@ Una distinzione importante nel panorama AI:
 - Nessun costo di abbonamento (solo hardware)
 - Comunità attiva e innovazione rapida
 - Prestazioni in rapido miglioramento
+
+### Strumenti di Ricerca AI
+
+Oltre ai chatbot generici, esistono strumenti specializzati per la ricerca:
+
+- **Perplexity**: motore di ricerca conversazionale con fonti citate
+- **Consensus**: ricerca in letteratura scientifica peer-reviewed
+- **Elicit**: assistente di ricerca per paper accademici
+- **Semantic Scholar**: database accademico con AI per estrarre insight
+- **You.com**: motore di ricerca con modalità AI e fonti multiple
+
+### AI per la Produttività Personale
+
+Strumenti AI per migliorare la produttività quotidiana:
+
+**Note e Conoscenza**:
+- **Notion AI**: assistente integrato per scrivere, riassumere, tradurre
+- **Mem.ai**: note con memoria AI che collega automaticamente i concetti
+- **Reflect**: app di note con AI per journaling e brainstorming
+
+**Riunioni e Comunicazione**:
+- **Otter.ai**: trascrizione automatica di meeting con riassunti AI
+- **Fireflies.ai**: registra, trascrive e analizza le riunioni
+- **Fathom**: note automatiche durante le call con highlight e action items
+- **Supernormal**: riassunti AI delle riunioni inviati automaticamente
+
+**Scrittura e Editing**:
+- **Grammarly**: correzione grammaticale e suggerimenti di stile con AI
+- **Hemingway Editor**: migliora la leggibilità del testo
+- **Wordtune**: riscrittura e parafrasi con diverse tonalità
+- **Jasper**: piattaforma di content marketing con AI
+
+**Gestione Email**:
+- **Superhuman AI**: scrittura e risposta email con AI integrata
+- **Shortwave**: inbox intelligente con AI per prioritizzare e rispondere
+- **Sanebox**: filtri AI per organizzare la posta
 
 ### Come Scegliere lo Strumento Giusto
 
@@ -733,8 +955,60 @@ Non esiste un modello migliore in assoluto. La scelta dipende da:
         correctIndex: 1,
         credits: 5,
       },
+      {
+        id: "q2-11",
+        question:
+          "Cosa distingue un AI Agent da un chatbot tradizionale?",
+        options: [
+          "L'AI Agent è sempre più veloce",
+          "L'AI Agent può pianificare, usare strumenti esterni (browser, API, terminale) ed eseguire azioni in autonomia",
+          "L'AI Agent funziona solo con comandi vocali",
+          "L'AI Agent non ha bisogno di connessione Internet",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q2-12",
+        question:
+          "Quale strumento permette di creare workflow automatizzati con AI senza scrivere codice?",
+        options: [
+          "GitHub Copilot",
+          "Zapier, Make o n8n con integrazioni AI",
+          "Midjourney",
+          "Stable Diffusion",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q2-13",
+        question:
+          "Cos'è CrewAI?",
+        options: [
+          "Un social network per sviluppatori AI",
+          "Un framework per orchestrare team di agenti AI che collaborano tra loro",
+          "Un tool per la gestione delle risorse umane",
+          "Un chatbot specializzato in recruiting",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q2-14",
+        question:
+          "Quale tool è specializzato nella trascrizione automatica di meeting con riassunti AI?",
+        options: [
+          "DALL-E",
+          "Otter.ai o Fireflies.ai",
+          "Midjourney",
+          "Stable Diffusion",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 50,
+    maxCredits: 70,
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -756,6 +1030,8 @@ Non esiste un modello migliore in assoluto. La scelta dipende da:
       "L'Importanza del Ruolo",
       "Principi Fondamentali del Prompt Design",
       "Errori Comuni nel Prompt Engineering",
+      "Debugging dei Prompt: Quando Non Funziona",
+      "Tecniche di Iterazione e Raffinamento",
       "La Conversazione come Strumento",
       "Prompt Engineering nel Mondo Reale",
       "Prompt Predefiniti: Template Pronti all'Uso",
@@ -892,6 +1168,61 @@ Il ruolo influenza: vocabolario, profondità tecnica, struttura argomentativa, t
 **Non specificare il formato**: se non dici come vuoi la risposta, il modello decide autonomamente (spesso in modo non ottimale).
 
 **Ignorare l'iterazione**: raramente il primo prompt dà il risultato perfetto. Il prompt engineering è un processo iterativo di raffinamento.
+
+### Debugging dei Prompt: Quando Non Funziona
+
+Quando un prompt non produce i risultati desiderati, ecco come diagnosticare e risolvere il problema:
+
+**Sintomi comuni e soluzioni**:
+
+| Problema | Possibile Causa | Soluzione |
+|----------|-----------------|----------|
+| Risposta troppo generica | Mancanza di specificità | Aggiungi dettagli concreti, esempi, vincoli |
+| Risposta fuori tema | Prompt ambiguo | Riformula in modo più diretto, usa delimitatori |
+| Tono sbagliato | Ruolo non definito | Specifica il ruolo e il pubblico target |
+| Troppo lungo/corto | Lunghezza non specificata | Indica esplicitamente la lunghezza desiderata |
+| Formato errato | Formato non richiesto | Descrivi il formato con un esempio |
+| Allucinazioni | Domanda su dati sconosciuti | Chiedi di citare fonti o ammettere incertezza |
+
+**tecnica del "Spiega il tuo ragionamento"**:
+Se non capisci perché l'AI ha risposto in un certo modo:
+> "Spiega passo dopo passo come sei arrivato a questa risposta."
+
+**Tecnica del "Cosa manca?"**:
+> "Rivedi la tua risposta. Cosa manca? Quali aspetti importanti non hai considerato?"
+
+**Tecnica dell'"Avvocato del diavolo"**:
+> "Critica la tua risposta. Quali sono i punti deboli? Come potrebbe essere migliorata?"
+
+### Tecniche di Iterazione e Raffinamento
+
+Il prompt engineering è un processo iterativo. Ecco le strategie più efficaci:
+
+**1. Iterazione per addizione**:
+Partire da un prompt semplice e aggiungere elementi progressivamente:
+- Versione 1: "Scrivi un articolo sull'AI"
+- Versione 2: "Scrivi un articolo di 800 parole sull'AI per manager non tecnici"
+- Versione 3: "Scrivi un articolo di 800 parole sull'AI per manager non tecnici, con focus sui benefici operativi e 3 casi d'uso concreti"
+
+**2. Iterazione per sottrazione**:
+Partire da un prompt complesso e semplificare se la risposta è confusa:
+- Rimuovi istruzioni ridondanti
+- Elimina vincoli contraddittori
+- Separa in prompt multipli se necessario
+
+**3. A/B Testing dei prompt**:
+Testa varianti dello stesso prompt per capire cosa funziona meglio:
+- Cambia il ruolo assegnato
+- Prova formati diversi (elenco vs prosa)
+- Varia il livello di dettaglio
+
+**4. Tecnica della "Bozza Zero"**:
+1. Primo prompt: genera una bozza grezza
+2. Secondo prompt: "Identifica i 3 punti più deboli di questa bozza"
+3. Terzo prompt: "Riscrivi migliorando questi 3 punti"
+
+**5. Feedback loop esplicito**:
+> "Ecco la tua risposta precedente. Il problema è [X]. Riscrivi affrontando specificamente questo aspetto."
 
 ### La Conversazione come Strumento
 
@@ -1116,8 +1447,47 @@ Ecco una raccolta di **prompt predefiniti** testati e ottimizzati, organizzati p
         correctIndex: 1,
         credits: 5,
       },
+      {
+        id: "q3-13",
+        question:
+          "Quando un prompt genera risposte troppo generiche, qual è la soluzione più efficace?",
+        options: [
+          "Usare un modello AI diverso",
+          "Aggiungere dettagli concreti, esempi e vincoli specifici al prompt",
+          "Ripetere lo stesso prompt più volte",
+          "Ridurre la lunghezza del prompt",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q3-14",
+        question:
+          "Cos'è la tecnica dell'iterazione per addizione?",
+        options: [
+          "Aggiungere più chatbot alla conversazione",
+          "Partire da un prompt semplice e aggiungere elementi progressivamente per raffinarlo",
+          "Sommare i risultati di più prompt diversi",
+          "Aumentare automaticamente la lunghezza delle risposte",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q3-15",
+        question:
+          "A cosa serve la tecnica 'Spiega il tuo ragionamento' nel debugging dei prompt?",
+        options: [
+          "A rallentare la generazione per risposte più accurate",
+          "A capire come l'AI è arrivata a una certa risposta per identificare errori nel prompt",
+          "A tradurre il prompt in linguaggio tecnico",
+          "A ridurre il consumo di token",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 60,
+    maxCredits: 75,
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -1200,6 +1570,68 @@ Consiste nel chiedere all'AI di valutare e migliorare iterativamente il proprio 
 
 Questo approccio iterativo produce risultati significativamente migliori rispetto a un singolo prompt.
 
+### Prompt Chaining: Sequenze di Prompt
+
+Il **prompt chaining** consiste nel collegare più prompt in sequenza, dove l'output di uno diventa l'input del successivo. È fondamentale per task complessi che non possono essere risolti con un singolo prompt.
+
+**Struttura tipica di una catena**:
+1. **Prompt di analisi**: comprendi il problema e i requisiti
+2. **Prompt di pianificazione**: crea una struttura o outline
+3. **Prompt di esecuzione**: genera il contenuto secondo il piano
+4. **Prompt di revisione**: valuta e migliora il risultato
+5. **Prompt di finalizzazione**: formatta e ottimizza l'output
+
+**Esempio pratico: creazione di un report**:
+
+> **Prompt 1**: "Analizza questi dati di vendita e identifica i 5 trend principali. [DATI]"
+> **Output 1**: Trend identificati
+
+> **Prompt 2**: "Per ciascuno di questi trend, suggerisci 3 azioni strategiche: [OUTPUT 1]"
+> **Output 2**: Azioni strategiche
+
+> **Prompt 3**: "Scrivi un executive summary di 300 parole basato su questa analisi: [OUTPUT 1 + OUTPUT 2]"
+> **Output 3**: Report finale
+
+**Vantaggi del chaining**:
+- Maggiore controllo su ogni fase
+- Possibilità di correggere errori intermedi
+- Output finale più coerente e approfondito
+- Riduzione delle allucinazioni
+
+### System Prompts e Istruzioni di Sistema
+
+Il **system prompt** (o system message) è un'istruzione speciale che definisce il comportamento globale del modello, separata dalla conversazione utente.
+
+**Differenza con il prompt utente**:
+- **System prompt**: definisce "chi sei" e "come devi comportarti" — resta attivo per tutta la conversazione
+- **User prompt**: la richiesta specifica dell'utente
+
+**Struttura di un system prompt efficace**:
+
+~~~
+## Identità
+Sei [ruolo] con [esperienza/competenze].
+
+## Comportamento
+- Rispondi sempre in [lingua]
+- Usa un tono [aggettivo]
+- Struttura le risposte con [formato]
+
+## Conoscenze
+Hai accesso a: [documenti/contesto]
+
+## Limitazioni
+- Non fare [azione proibita]
+- Se non sai qualcosa, [comportamento]
+
+## Formato Output
+- Usa sempre [struttura]
+- Includi [elementi richiesti]
+~~~
+
+**System prompt per assistente aziendale**:
+> "Sei l'assistente AI di TechCorp. Rispondi solo a domande relative ai nostri prodotti software. Usa sempre un tono professionale ma amichevole. Se la domanda esula dal tuo ambito, suggerisci di contattare il supporto umano. Cita sempre la fonte quando possibile."
+
 ### Le Istruzioni Personalizzate
 
 Le **Istruzioni Personalizzate** di ChatGPT permettono di fornire un ricco contesto che il modello considererà in ogni conversazione. Sono composte da due sezioni:
@@ -1234,6 +1666,45 @@ Casi d'uso per GPT personalizzati:
 - Tutor personalizzato per una materia specifica
 - Generatore di report che segue un template aziendale
 - Traduttore specializzato con glossario tecnico di settore
+
+### Prompting per AI Agents
+
+Promptare un agente AI richiede un approccio diverso rispetto a un chatbot tradizionale. Gli agenti devono capire **obiettivi**, **strumenti disponibili** e **criteri di successo**.
+
+**Struttura del prompt per agenti**:
+
+~~~
+## OBIETTIVO
+[Descrizione chiara del risultato finale desiderato]
+
+## STRUMENTI DISPONIBILI
+- [Tool 1]: [cosa fa, quando usarlo]
+- [Tool 2]: [cosa fa, quando usarlo]
+
+## VINCOLI
+- [Limitazione 1]
+- [Limitazione 2]
+
+## CRITERI DI SUCCESSO
+- [Come capire se il task è completato]
+
+## PROCEDURA
+1. [Primo step]
+2. [Secondo step]
+...
+~~~
+
+**Esempio per un agente di ricerca**:
+> **Obiettivo**: Trova i 5 competitor principali di [Azienda] e crea una tabella comparativa con pricing, feature e recensioni.
+> **Strumenti**: Browser web, lettura pagine, estrazione dati, creazione tabelle.
+> **Vincoli**: Usa solo fonti ufficiali e recensioni verificate. Non inventare dati.
+> **Criteri di successo**: Tabella completa con almeno 3 datapoint per ogni competitor.
+
+**Principi chiave per prompting di agenti**:
+- Sii esplicito sugli **strumenti** che l'agente può usare
+- Definisci chiaramente **quando fermarsi**
+- Specifica come **gestire gli errori** (riprovare, chiedere aiuto, segnalare)
+- Includi **esempi di output atteso** quando possibile
 
 ### Il Prompt di Contesto per il Brand
 
@@ -1597,8 +2068,47 @@ Questa tecnica si chiama **"AI come consulente"** e permette di scoprire applica
         correctIndex: 1,
         credits: 5,
       },
+      {
+        id: "q4-17",
+        question:
+          "Cos'è il prompt chaining?",
+        options: [
+          "Usare lo stesso prompt su modelli diversi",
+          "Collegare più prompt in sequenza, dove l'output di uno diventa l'input del successivo",
+          "Creare catene di parole chiave nel prompt",
+          "Condividere i prompt con altri utenti",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q4-18",
+        question:
+          "Qual è la differenza tra system prompt e user prompt?",
+        options: [
+          "Il system prompt è più corto",
+          "Il system prompt definisce il comportamento globale del modello e resta attivo per tutta la conversazione, mentre l'user prompt è la richiesta specifica",
+          "Il system prompt funziona solo con GPT-4",
+          "Non c'è differenza, sono sinonimi",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q4-19",
+        question:
+          "Cosa deve includere un prompt efficace per un AI Agent?",
+        options: [
+          "Solo l'obiettivo finale",
+          "Obiettivo, strumenti disponibili, vincoli e criteri di successo",
+          "Solo il nome dell'agente che si vuole usare",
+          "Una descrizione generica del problema",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 80,
+    maxCredits: 95,
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -1620,6 +2130,10 @@ Questa tecnica si chiama **"AI come consulente"** e permette di scoprire applica
       "Email e Comunicazione",
       "Storytelling con l'AI",
       "Social Media Specifici",
+      "Script per Video e YouTube",
+      "Contenuti per Podcast",
+      "Presentazioni e Slide",
+      "Documentazione Tecnica",
     ],
     content: `
 ## L'AI come Alleato nella Creazione di Contenuti
@@ -1774,6 +2288,73 @@ Ogni piattaforma ha le sue regole. L'AI può adattare il contenuto:
 **Instagram**: caption breve e visiva, emoji moderate, hashtag strategici, CTA in bio, formato carosello per contenuti educativi
 **Newsletter**: oggetto irresistibile, anteprima coinvolgente, valore immediato nei primi paragrafi, link di approfondimento, PS finale
 **Blog**: SEO ottimizzato, H2/H3 strutturati, link interni ed esterni, CTA nel contenuto
+
+### Script per Video e YouTube
+
+Creare script video efficaci richiede una struttura specifica ottimizzata per la retention:
+
+**Struttura dello script YouTube**:
+1. **Hook (0-30 sec)**: cattura l'attenzione immediata con una domanda, statistica shock o promessa di valore
+2. **Intro (30 sec - 1 min)**: presenta il problema e anticipa la soluzione
+3. **Corpo (variabile)**: contenuto principale diviso in sezioni chiare
+4. **CTA intermedia**: invito a iscriversi o lasciare like
+5. **Conclusione**: recap dei punti chiave
+6. **CTA finale**: cosa fare dopo (video correlato, link in descrizione)
+
+**Prompt per script YouTube**:
+> "Crea uno script per un video YouTube di 10 minuti su [ARGOMENTO]. Target: [AUDIENCE]. Struttura: hook di 30 secondi che catturi l'attenzione, introduzione del problema, 5 sezioni con sottotitoli visuali, CTA intermedia al minuto 5, conclusione con recap e CTA finale. Includi indicazioni per B-roll e grafiche. Tono: energico ma professionale."
+
+**Script per Reel/Shorts (< 60 sec)**:
+> "Crea uno script per un Reel di 45 secondi su [ARGOMENTO]. Struttura: hook nei primi 3 secondi, 3 punti chiave rapidi, chiusura con CTA. Linguaggio colloquiale e diretto. Indica i tagli di scena."
+
+### Contenuti per Podcast
+
+L'AI può supportare ogni fase della produzione podcast:
+
+**Pianificazione episodi**:
+> "Genera 10 idee di episodi podcast per [NOME PODCAST] sul tema [TEMA]. Per ogni idea: titolo accattivante, 3 punti chiave da trattare, domande per eventuale ospite, durata stimata."
+
+**Outline dell'episodio**:
+> "Crea un outline dettagliato per un episodio podcast di 45 minuti su [ARGOMENTO]. Struttura: introduzione (2 min), segmento 1 (15 min), segmento 2 (15 min), Q&A/riflessioni (10 min), chiusura (3 min). Includi domande di transizione e punti di discussione."
+
+**Domande per interviste**:
+> "Genera 15 domande per un'intervista podcast con [TIPO DI OSPITE] che lavora nel settore [SETTORE]. Mix di: 5 domande sul percorso personale, 5 domande tecniche/di settore, 5 domande provocatorie/fuori dagli schemi. Ordina dalla più accessibile alla più profonda."
+
+**Show notes e descrizioni**:
+> "Basandoti su questa trascrizione/outline, crea: titolo SEO-friendly, descrizione di 200 parole, 5 bullet point con timestamp, 3 citazioni memorabili, keywords per la ricerca."
+
+### Presentazioni e Slide
+
+L'AI eccelle nella strutturazione di presentazioni:
+
+**Prompt per presentazione completa**:
+> "Crea una presentazione di 15 slide su [ARGOMENTO] per [AUDIENCE]. Ogni slide deve contenere: titolo, 3-4 bullet point (max 6 parole ciascuno), nota per lo speaker (cosa dire), suggerimento visivo. Includi: slide titolo, agenda, 10 slide di contenuto, slide Q&A, slide finale con contatti."
+
+**Struttura delle slide per impatto**:
+- **Slide 1**: Titolo + sottotitolo evocativo
+- **Slide 2**: Il problema (pain point dell'audience)
+- **Slide 3**: Dati che supportano il problema
+- **Slide 4-10**: La soluzione, step by step
+- **Slide 11-12**: Risultati/case study
+- **Slide 13**: Riepilogo in 3 punti
+- **Slide 14**: CTA chiara
+- **Slide 15**: Contatti e Q&A
+
+**Prompt per pitch deck**:
+> "Crea un pitch deck di 10 slide per [STARTUP/PROGETTO]. Include: problema, soluzione, mercato (TAM/SAM/SOM), modello di business, traction, team, roadmap, richiesta di investimento, contatti. Ogni slide: titolo, 3 bullet point, dato chiave."
+
+### Documentazione Tecnica
+
+L'AI può accelerare la creazione di documentazione:
+
+**Documentazione API**:
+> "Genera la documentazione per questa API: [DESCRIZIONE]. Includi: descrizione endpoint, parametri (required/optional), esempi di request/response, codici di errore, limiti di rate, esempi in curl e Python."
+
+**User Guide**:
+> "Crea una guida utente per [PRODOTTO/FEATURE]. Struttura: introduzione, prerequisiti, guida passo-passo con screenshot placeholder, troubleshooting (5 problemi comuni), FAQ (10 domande), glossario."
+
+**README per progetti open source**:
+> "Genera un README.md professionale per [PROGETTO]. Includi: badge, descrizione one-liner, features, demo GIF placeholder, installazione (npm/pip/etc), quick start, configurazione, contributing guidelines, license, contatti."
     `,
     quiz: [
       {
@@ -1906,8 +2487,60 @@ Ogni piattaforma ha le sue regole. L'AI può adattare il contenuto:
         correctIndex: 1,
         credits: 5,
       },
+      {
+        id: "q5-11",
+        question:
+          "Qual è la struttura consigliata per uno script video YouTube?",
+        options: [
+          "Iniziare con una lunga presentazione del canale",
+          "Hook nei primi 30 secondi, intro del problema, corpo in sezioni, CTA intermedia, conclusione con recap e CTA finale",
+          "Solo contenuto senza introduzione né conclusione",
+          "Leggere direttamente un articolo di blog",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q5-12",
+        question:
+          "Cosa sono le 'show notes' nel contesto di un podcast?",
+        options: [
+          "Le note personali del conduttore",
+          "Descrizione dell'episodio con titolo SEO, bullet point con timestamp, citazioni e keywords",
+          "La scaletta dei prossimi episodi",
+          "I commenti degli ascoltatori",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q5-13",
+        question:
+          "Quante parole/bullet point dovrebbe avere ogni slide di una presentazione efficace?",
+        options: [
+          "Almeno 50 parole per slide",
+          "3-4 bullet point con massimo 6 parole ciascuno",
+          "Il più testo possibile per non dimenticare nulla",
+          "Nessun testo, solo immagini",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q5-14",
+        question:
+          "Cosa dovrebbe includere un pitch deck efficace?",
+        options: [
+          "Solo la descrizione del prodotto",
+          "Problema, soluzione, mercato, modello di business, traction, team, roadmap e richiesta di investimento",
+          "Solo le proiezioni finanziarie",
+          "La biografia completa del founder",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 50,
+    maxCredits: 70,
   },
 
   // ═══════════════════════════════════════════════════════════════
@@ -1929,6 +2562,9 @@ Ogni piattaforma ha le sue regole. L'AI può adattare il contenuto:
       "Categorie di Fonti Affidabili",
       "Responsabilità e Uso Etico",
       "Il Paradigma della Copia e la Creatività Computazionale",
+      "L'EU AI Act: Regolamentazione Europea",
+      "Deepfakes: Riconoscimento e Rischi",
+      "AI Governance Aziendale",
       "Impatto Ambientale e Sociale dell'AI",
       "Il Fenomeno dell'Automazione Bias",
       "Costruire un Workflow di Verifica",
@@ -2098,6 +2734,114 @@ La filosofa **Margaret A. Boden** ha proposto una tripartizione della creativit�
 L'AI generativa opera principalmente ai livelli combinatorio ed esplorativo: ricombina elementi del dataset in configurazioni nuove e permette di esplorare regioni inedite dello spazio latente. La creatività umana non viene copiata, bensì **automatizzata**: si tratta di giungere alla riproduzione di processi collettivi che portano all'innovazione.
 
 Tuttavia il dibattito legale resta aperto: il susseguirsi di cause contro OpenAI, Midjourney e Stability AI è stato sostenuto da un vasto scontento verso le pratiche di raccolta dei dati. La Writers Guild of America nel 2023 ha indetto uno sciopero per limitare l'uso dei modelli generativi nell'industria cinematografica, ottenendo garanzie che l'AI non possa sostituire il lavoro di sceneggiatura.
+
+### L'EU AI Act: Regolamentazione Europea
+
+L'**EU AI Act** è la prima legislazione completa sull'intelligenza artificiale al mondo, approvata dal Parlamento Europeo nel marzo 2024. Entrerà in vigore progressivamente tra il 2024 e il 2027.
+
+**Approccio basato sul rischio**:
+La normativa classifica i sistemi AI in quattro categorie di rischio:
+
+1. **Rischio inaccettabile** (vietati):
+   - Sistemi di social scoring governativo
+   - Manipolazione subliminale del comportamento
+   - Sfruttamento di vulnerabilità (età, disabilità)
+   - Riconoscimento facciale in tempo reale in spazi pubblici (con eccezioni)
+
+2. **Rischio alto** (requisiti stringenti):
+   - Sistemi usati in ambito occupazionale (recruiting, valutazione)
+   - Accesso a servizi essenziali (credito, assicurazioni)
+   - Sistemi educativi e di formazione
+   - Infrastrutture critiche
+   - Devono: documentare i dati di training, garantire supervisione umana, essere trasparenti
+
+3. **Rischio limitato** (obblighi di trasparenza):
+   - Chatbot e assistenti virtuali
+   - Sistemi che generano contenuti (testo, immagini, audio, video)
+   - **Obbligo di dichiarare che il contenuto è generato da AI**
+
+4. **Rischio minimo** (nessun obbligo specifico):
+   - Filtri spam, videogiochi, sistemi di raccomandazione
+
+**Obblighi per i modelli foundation (GPAI)**:
+- Documentazione tecnica dettagliata
+- Policy sul copyright e trasparenza sui dati di training
+- Per modelli ad alto rischio: valutazioni di sicurezza, reporting incidenti
+
+**Sanzioni**:
+- Fino al 7% del fatturato globale per violazioni gravi
+- Fino al 3% per altre violazioni
+
+**Implicazioni pratiche**:
+- Se usi chatbot per assistenza clienti: devi dichiarare che è un'AI
+- Se generi contenuti (testo, immagini, video): devi indicare che sono AI-generated
+- Se usi AI per screening CV: rientri nella categoria alto rischio
+
+### Deepfakes: Riconoscimento e Rischi
+
+I **deepfakes** sono contenuti sintetici (video, audio, immagini) che usano l'AI per creare rappresentazioni false ma realistiche di persone reali.
+
+**Tipologie di deepfake**:
+- **Face swap**: sostituzione del volto di una persona con un'altra
+- **Voice cloning**: sintesi vocale che imita la voce di una persona
+- **Lip sync**: sincronizzazione delle labbra con audio diverso dall'originale
+- **Full body**: generazione di video completi con persone inesistenti
+
+**Rischi principali**:
+- **Disinformazione politica**: video falsi di politici che dicono cose mai dette
+- **Frodi finanziarie**: CEO deepfake che autorizzano trasferimenti di denaro
+- **Revenge porn**: contenuti intimi non consensuali
+- **Truffe**: chiamate vocali che imitano familiari in difficoltà
+
+**Come riconoscere un deepfake**:
+- Movimenti oculari innaturali o assenza di battito di ciglia
+- Bordi sfumati o "tremolanti" attorno al viso
+- Illuminazione incoerente tra viso e sfondo
+- Sincronizzazione labiale imperfetta
+- Artefatti nei capelli, orecchie, denti
+- Metadati del file sospetti
+
+**Strumenti di detection**:
+- **Hive Moderation**: API per rilevare contenuti AI-generated
+- **Sensity AI**: specializzato in detection di deepfake
+- **Microsoft Video Authenticator**: analisi di video sospetti
+- **Adobe Content Authenticity Initiative**: verifica della provenienza
+
+**Best practices**:
+- Verifica sempre la fonte originale di video virali o sensazionali
+- Usa la ricerca inversa delle immagini (Google Images, TinEye)
+- Controlla se il contenuto è stato riportato da fonti autorevoli
+- In caso di dubbio, non condividere
+
+### AI Governance Aziendale
+
+Le organizzazioni devono definire policy chiare per l'uso dell'AI:
+
+**Elementi di una AI Policy aziendale**:
+
+1. **Ambito di applicazione**: quali tool AI sono approvati e per quali scopi
+2. **Classificazione dei dati**: cosa può e cosa non può essere condiviso con AI esterne
+3. **Uso accettabile**: esempi concreti di usi consentiti e vietati
+4. **Revisione e approvazione**: chi deve approvare output AI prima della pubblicazione
+5. **Trasparenza**: quando e come dichiarare l'uso dell'AI
+6. **Formazione**: requisiti di training per i dipendenti
+7. **Monitoraggio**: come viene verificato il rispetto della policy
+
+**Modello di classificazione per l'uso aziendale**:
+
+| Livello | Dati ammessi | Strumenti | Esempio |
+|---------|-------------|-----------|----------|
+| Verde | Pubblici, non sensibili | Qualsiasi chatbot | Bozza email generica |
+| Giallo | Interni non confidenziali | Tool aziendali approvati | Analisi trend di mercato |
+| Rosso | Confidenziali, personali | Solo modelli locali/enterprise | Dati clienti, strategie |
+
+**Checklist pre-deployment per applicazioni AI**:
+- [ ] I dati di training sono legittimi e documentati?
+- [ ] Il sistema ha supervisione umana appropriata?
+- [ ] Gli utenti sono informati che interagiscono con AI?
+- [ ] Esistono procedure per gestire errori e reclami?
+- [ ] I bias sono stati valutati e mitigati?
+- [ ] La conformità normativa è stata verificata?
 
 ### Impatto Ambientale e Sociale dell'AI
 
@@ -2342,7 +3086,72 @@ Il settore dell'AI è caratterizzato da un flusso costante di novità. Ogni 3-6 
         correctIndex: 1,
         credits: 5,
       },
+      {
+        id: "q6-15",
+        question:
+          "Secondo l'EU AI Act, in quale categoria di rischio rientrano i chatbot?",
+        options: [
+          "Rischio inaccettabile (vietati)",
+          "Rischio alto (requisiti stringenti)",
+          "Rischio limitato (obblighi di trasparenza, devono dichiarare di essere AI)",
+          "Rischio minimo (nessun obbligo)",
+        ],
+        correctIndex: 2,
+        credits: 5,
+      },
+      {
+        id: "q6-16",
+        question:
+          "Qual è un segnale visivo che può indicare un deepfake video?",
+        options: [
+          "Video in alta definizione",
+          "Movimenti oculari innaturali, bordi sfumati attorno al viso, sincronizzazione labiale imperfetta",
+          "Presenza di sottotitoli",
+          "Durata superiore a 10 minuti",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q6-17",
+        question:
+          "Cosa prevede l'EU AI Act per i contenuti generati da AI?",
+        options: [
+          "Devono essere tutti vietati",
+          "Devono essere etichettati, dichiarando che sono stati generati da AI",
+          "Possono essere usati solo da aziende certificate",
+          "Devono essere approvati dalla Commissione Europea",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q6-18",
+        question:
+          "Cosa dovrebbe includere una AI Policy aziendale?",
+        options: [
+          "Solo l'elenco dei tool vietati",
+          "Ambito di applicazione, classificazione dati, uso accettabile, revisione, trasparenza, formazione e monitoraggio",
+          "Solo le sanzioni per chi non rispetta le regole",
+          "Solo i costi degli abbonamenti",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
+      {
+        id: "q6-19",
+        question:
+          "Quali sistemi AI sono vietati dall'EU AI Act?",
+        options: [
+          "Tutti i chatbot",
+          "Social scoring governativo, manipolazione subliminale e riconoscimento facciale in tempo reale in spazi pubblici (con eccezioni)",
+          "Tutti i generatori di immagini",
+          "Qualsiasi sistema che usa deep learning",
+        ],
+        correctIndex: 1,
+        credits: 5,
+      },
     ],
-    maxCredits: 70,
+    maxCredits: 95,
   },
 ];

@@ -17,6 +17,10 @@
 /.next/
 /out/
 
+# deployment artifacts
+/school/
+school.zip
+
 # production
 /build
 
