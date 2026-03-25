@@ -40,13 +40,13 @@ export default function Quiz({ moduleId, questions, maxCredits }: QuizProps) {
     setPhase("feedback");
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const newAnswers = [...answers, selectedOption!];
 
     if (isLast) {
       // Submit
       setAnswers(newAnswers);
-      const score = submitQuiz(moduleId, newAnswers);
+      const score = await submitQuiz(moduleId, newAnswers);
       setFinalScore(score);
       setPhase("results");
     } else {
