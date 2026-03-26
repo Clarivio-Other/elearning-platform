@@ -6,6 +6,18 @@ export interface QuizQuestion {
   credits: number;
 }
 
+export interface Resource {
+  id: string;
+  title: string;
+  description: string;
+  type: "book" | "pdf" | "link" | "video" | "tool" | "doc";
+  icon?: string;
+  url?: string;
+  downloadUrl?: string;
+  author?: string;
+  tags: string[];
+}
+
 export interface UserProfile {
   nome: string;
   cognome: string;
@@ -32,6 +44,7 @@ export interface Module {
   maxCredits: number;
   icon: string;
   agenda: string[];
+  resources: Resource[];
 }
 
 export interface Badge {

@@ -4,7 +4,6 @@ import {
   RotateCcw,
   Menu, X, ChevronsLeft, ChevronsRight,
   ChevronRight, LogOut,
-  FileText, ListChecks, ExternalLink, BookOpen, ScrollText, Sparkles,
 } from "lucide-react";
 import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
@@ -50,17 +49,6 @@ const comingSoonData: Record<string, { title: string; description: string; items
       "Template per contenuti, email e social",
       "Confronto strumenti AI aggiornato",
       "Workflow automatizzati pronti all'uso",
-    ],
-  },
-
-  risorse: {
-    title: "Clarivio Risorse",
-    description: "Guide, cheat sheet, checklist e materiali di approfondimento scaricabili.",
-    items: [
-      "Guide PDF approfondite",
-      "Cheat sheet e infografiche",
-      "Checklist operative per ogni scenario",
-      "Link curati e aggiornati mensilmente",
     ],
   },
 };
@@ -278,56 +266,8 @@ const promptLibrary: { category: string; icon: string; prompts: { title: string;
 
 const resourceLibrary: { category: string; icon: string; resources: { title: string; description: string; type: "pdf" | "link" | "checklist"; url?: string; content?: string; links?: { name: string; url: string; desc: string }[] }[] }[] = [
   {
-    category: "Guide PDF",
-    icon: "/icons/pen.png",
-    resources: [
-      {
-        title: "Guida Completa al Prompt Engineering",
-        description: "20 pagine con tecniche avanzate, framework e best practice per scrivere prompt efficaci.",
-        type: "pdf",
-        content: "Guida completa al Prompt Engineering per professionisti.\n\nContenuti:\n1. Fondamenti del Prompt Engineering\n2. Framework RTF, RISEN, RODES\n3. Chain of Thought e ragionamento guidato\n4. Prompt per casi d'uso specifici\n5. Errori comuni da evitare\n6. Template pronti all'uso",
-      },
-      {
-        title: "Come Scegliere lo Strumento AI Giusto",
-        description: "Guida pratica per orientarsi tra ChatGPT, Claude, Gemini, Copilot e altri tool.",
-        type: "pdf",
-        content: "Guida alla scelta degli strumenti AI.\n\n1. Panoramica dei principali LLM\n2. Confronto funzionalità e prezzi\n3. Casi d'uso ideali per ogni tool\n4. Matrice decisionale\n5. Workflow consigliati",
-      },
-      {
-        title: "EU AI Act: Guida Pratica per le Aziende",
-        description: "Cosa prevede il regolamento europeo e come prepararsi alla compliance.",
-        type: "pdf",
-        content: "EU AI Act - Guida Pratica.\n\n1. Panoramica del regolamento\n2. Classificazione dei rischi\n3. Obblighi per categoria\n4. Timeline di implementazione\n5. Checklist di compliance\n6. FAQ",
-      },
-    ],
-  },
-  {
-    category: "Cheat Sheet",
-    icon: "/icons/target.png",
-    resources: [
-      {
-        title: "Prompt Cheat Sheet (A4)",
-        description: "Un 'cheat sheet' è un foglio riassuntivo con tutte le formule e framework essenziali a portata di mano. Stampalo e tienilo sulla scrivania!",
-        type: "pdf",
-        content: "📋 COS'È UN CHEAT SHEET?\nUn cheat sheet (letteralmente 'foglio per barare') è una guida rapida di riferimento che riassume le informazioni più importanti su un argomento. Stampalo in formato A4 e tienilo vicino mentre lavori!\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n🎯 FRAMEWORK PER PROMPT\n\n[RTF] Ruolo + Task + Formato\n→ Il più semplice e veloce da usare\n\n[RISEN] Role + Instructions + Steps + End Goal + Narrowing\n→ Per task complessi che richiedono precisione\n\n[RODES] Role + Objective + Details + Examples + Sense Check\n→ Quando vuoi output creativi ma controllati\n\n[ABA] Ask Before Answer\n→ Chiedi all'AI di fare domande prima di rispondere\n\n[CoT] Chain of Thought\n→ 'Ragiona step by step' per problemi logici\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n✨ FORMULA MAGICA (copia e personalizza):\n\nSei un [RUOLO] con [X anni di ESPERIENZA].\n[TASK da completare].\nOutput: [FORMATO desiderato].\nTono: [TONO di voce].\n\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n💡 TIPS VELOCI:\n• Sii specifico, non generico\n• Dai contesto e vincoli\n• Chiedi un formato preciso\n• Itera e migliora il prompt",
-      },
-      {
-        title: "Mappa Strumenti AI 2024",
-        description: "Infografica con tutti i principali tool AI organizzati per categoria d'uso.",
-        type: "pdf",
-        content: "MAPPA STRUMENTI AI 2024\n\n📝 SCRITTURA: ChatGPT, Claude, Jasper, Copy.ai\n🎨 IMMAGINI: Midjourney, DALL-E 3, Leonardo, Stable Diffusion\n🎬 VIDEO: Runway, Pika, HeyGen, Synthesia\n🔊 AUDIO: ElevenLabs, Murf, Descript\n💼 PRODUTTIVITÀ: Notion AI, Gamma, Beautiful.ai\n💻 CODING: GitHub Copilot, Cursor, Replit",
-      },
-      {
-        title: "Confronto LLM: Pro e Contro",
-        description: "Tabella comparativa dei principali Large Language Model.",
-        type: "pdf",
-        content: "CONFRONTO LLM\n\n| Modello | Pro | Contro | Ideale per |\n|---------|-----|--------|------------|\n| GPT-4o | Multimodale, veloce | Costo | Uso generale |\n| Claude 3 | Contesto lungo, etico | Meno plugin | Analisi documenti |\n| Gemini | Integrazione Google | Allucinazioni | Ricerca |\n| Llama 3 | Open source, gratis | Setup tecnico | Sviluppatori |",
-      },
-    ],
-  },
-  {
     category: "Checklist",
-    icon: "/icons/gear.png",
+    icon: "/icons/thiings/checklist.png",
     resources: [
       {
         title: "Checklist Pre-Pubblicazione",
@@ -351,7 +291,7 @@ const resourceLibrary: { category: string; icon: string; resources: { title: str
   },
   {
     category: "Link Curati",
-    icon: "/icons/magnifier.png",
+    icon: "/icons/thiings/magnifier.png",
     resources: [
       {
         title: "Newsletter AI Consigliate",
@@ -540,6 +480,23 @@ export default function DashboardPage() {
     });
   }, [progress.moduleScores]);
 
+  // ── Featured videos for Risorse section ──
+  const featuredVideos = useMemo(() => {
+    return modules
+      .flatMap((mod) =>
+        mod.resources
+          .filter((r) => r.type === "video" && Boolean(r.url))
+          .map((r) => ({
+            id: r.id,
+            title: r.title,
+            description: r.description,
+            url: r.url!,
+            moduleTitle: mod.title,
+          })),
+      )
+      .slice(0, 4);
+  }, []);
+
   // Close mobile sidebar on resize to desktop
   useEffect(() => {
     const handleResize = () => {
@@ -567,7 +524,7 @@ export default function DashboardPage() {
       {/* ══════ SIDEBAR ══════ */}
       <aside
         className={`
-          fixed top-0 left-0 h-full z-50 bg-white border-r border-border
+          fixed top-0 left-0 h-full z-50 bg-white border border-border/80 rounded-r-3xl shadow-[0_8px_30px_rgba(15,23,42,0.08)] overflow-hidden
           flex flex-col transition-all duration-300 ease-in-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen
@@ -578,9 +535,9 @@ export default function DashboardPage() {
         {/* Sidebar header */}
         <div className={`flex items-center gap-3 p-4 border-b border-border ${sidebarCollapsed ? "lg:justify-center lg:px-2" : ""}`}>
           <img
-            src="/logo/Logo_clarivio.svg"
+            src={sidebarCollapsed ? "/logo/Logo.png" : "/logo/Logo_clarivio.svg"}
             alt="Clarivio"
-            className={`transition-all duration-300 ${sidebarCollapsed ? "h-8 w-8" : "h-8 w-auto"}`}
+            className={`transition-all duration-300 ${sidebarCollapsed ? "h-8 w-8 object-contain" : "h-8 w-auto"}`}
           />
           {/* Mobile close */}
           <button
@@ -1067,198 +1024,294 @@ export default function DashboardPage() {
             {activeSection === "risorse" && (
               <div className="space-y-6">
                 {/* Header */}
-                <div className="text-center sm:text-left">
-                  <div className="flex items-center gap-3 mb-2 justify-center sm:justify-start">
-                    <img src="/icons/pen.png" alt="" className="h-8 w-8 object-contain" />
+                <Card className="p-5 sm:p-6">
+                <div className="flex items-center gap-4">
+                  <img src="/icons/thiings/rocket.png" alt="" className="w-14 h-14 object-contain shrink-0" />
+                  <div>
                     <h2 className="text-xl sm:text-2xl font-bold">Risorse e Materiali</h2>
+                    <p className="text-sm text-foreground-muted mt-1 max-w-xl">
+                      Guide, tool, corsi, video e materiali operativi — tutto il materiale di approfondimento in un unico luogo.
+                    </p>
                   </div>
-                  <p className="text-sm text-foreground-muted max-w-xl">
-                    Guide, cheat sheet, checklist e link curati per il tuo percorso formativo.
-                  </p>
                 </div>
-                
-                {/* Category tabs */}
-                <div className="flex flex-wrap gap-2">
-                  {resourceLibrary.map((cat, i) => (
-                    <button
-                      key={cat.category}
-                      onClick={() => { setSelectedResourceCat(i); setExpandedResource(null); }}
-                      className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-medium transition-all ${
-                        selectedResourceCat === i
-                          ? "bg-viola text-white shadow-sm"
-                          : "bg-surface border border-border text-foreground-muted hover:bg-surface-alt hover:border-viola/30"
-                      }`}
-                    >
-                      <img src={cat.icon} alt="" className="h-4 w-4 object-contain" />
-                      {cat.category}
-                    </button>
-                  ))}
-                </div>
+                </Card>
 
-                {/* Grid */}
-                <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                  {resourceLibrary[selectedResourceCat].resources.map((r) => (
-                    <Card
-                      key={r.title}
-                      className="p-5 cursor-pointer transition-all hover:border-viola/50 hover:shadow-md group"
-                      onClick={() => setExpandedResource(r.title)}
-                    >
-                      {/* Icon */}
-                      <div className={`w-11 h-11 rounded-xl flex items-center justify-center mb-4 ${
-                        r.type === "pdf" ? "bg-red-500/10" : 
-                        r.type === "checklist" ? "bg-green-500/10" : "bg-blue-500/10"
-                      }`}>
-                        {r.type === "pdf" && <FileText className="h-5 w-5 text-red-500" />}
-                        {r.type === "checklist" && <ListChecks className="h-5 w-5 text-green-500" />}
-                        {r.type === "link" && <ExternalLink className="h-5 w-5 text-blue-500" />}
-                      </div>
-                      
-                      {/* Badge */}
-                      <span className={`inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md font-semibold mb-2 ${
-                        r.type === "pdf" ? "bg-red-500/10 text-red-600" :
-                        r.type === "checklist" ? "bg-green-500/10 text-green-600" : "bg-blue-500/10 text-blue-600"
-                      }`}>
-                        {r.type === "pdf" ? "Guida" : r.type === "checklist" ? "Checklist" : "Link"}
-                      </span>
-                      
-                      {/* Content */}
-                      <h3 className="font-semibold text-sm mb-1.5 group-hover:text-viola transition-colors line-clamp-2">
-                        {r.title}
-                      </h3>
-                      <p className="text-xs text-foreground-muted line-clamp-2 mb-3">
-                        {r.description}
+                {/* ── Quick Stats ── */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                  <div className="rounded-2xl bg-green-50 border border-green-200/60 p-4 flex items-center gap-3 shadow-sm">
+                    <img src="/icons/thiings/toolbox.png" alt="" className="w-11 h-11 object-contain shrink-0" />
+                    <div>
+                      <p className="text-2xl font-bold text-green-700">
+                        {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "tool").length, 0)}
                       </p>
-                      
-                      {/* Footer */}
-                      <div className="flex items-center justify-between pt-3 border-t border-border/50">
-                        <span className="text-[11px] text-foreground-muted">
-                          {r.links ? `${r.links.length} link` : "Leggi ora"}
-                        </span>
-                        <ChevronRight className="h-4 w-4 text-foreground-muted group-hover:text-viola group-hover:translate-x-0.5 transition-all" />
-                      </div>
-                    </Card>
-                  ))}
+                      <p className="text-xs text-foreground-muted mt-0.5">Tool AI</p>
+                    </div>
+                  </div>
+                  <div className="rounded-2xl bg-blue-50 border border-blue-200/60 p-4 flex items-center gap-3 shadow-sm">
+                    <img src="/icons/thiings/desktop.png" alt="" className="w-11 h-11 object-contain shrink-0" />
+                    <div>
+                      <p className="text-2xl font-bold text-blue-700">
+                        {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "link").length, 0)}
+                      </p>
+                      <p className="text-xs text-foreground-muted mt-0.5">Link e Corsi</p>
+                    </div>
+                  </div>
+                  <div className="rounded-2xl bg-purple-50 border border-purple-200/60 p-4 flex items-center gap-3 shadow-sm">
+                    <img src="/icons/thiings/video.png" alt="" className="w-11 h-11 object-contain shrink-0" />
+                    <div>
+                      <p className="text-2xl font-bold text-purple-700">
+                        {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "video").length, 0)}
+                      </p>
+                      <p className="text-xs text-foreground-muted mt-0.5">Video</p>
+                    </div>
+                  </div>
                 </div>
 
-                {/* Modal */}
-                {expandedResource && (
-                  <div 
-                    className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm" 
-                    onClick={() => setExpandedResource(null)}
-                  >
-                    <Card 
-                      className="w-full max-w-2xl max-h-[85vh] overflow-hidden" 
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {(() => {
-                        const r = resourceLibrary[selectedResourceCat].resources.find(res => res.title === expandedResource);
-                        if (!r) return null;
-                        return (
-                          <>
-                            {/* Header */}
-                            <div className="p-5 sm:p-6 border-b border-border">
-                              <div className="flex items-start gap-4">
-                                <div className={`shrink-0 w-12 h-12 rounded-xl flex items-center justify-center ${
-                                  r.type === "pdf" ? "bg-red-500/10" : 
-                                  r.type === "checklist" ? "bg-green-500/10" : "bg-blue-500/10"
-                                }`}>
-                                  {r.type === "pdf" && <FileText className="h-6 w-6 text-red-500" />}
-                                  {r.type === "checklist" && <ListChecks className="h-6 w-6 text-green-500" />}
-                                  {r.type === "link" && <ExternalLink className="h-6 w-6 text-blue-500" />}
-                                </div>
-                                <div className="flex-1 min-w-0">
-                                  <span className={`inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md font-semibold mb-1 ${
-                                    r.type === "pdf" ? "bg-red-500/10 text-red-600" :
-                                    r.type === "checklist" ? "bg-green-500/10 text-green-600" : "bg-blue-500/10 text-blue-600"
-                                  }`}>
-                                    {r.type === "pdf" ? "Guida" : r.type === "checklist" ? "Checklist" : "Link Curati"}
-                                  </span>
-                                  <h3 className="text-lg font-bold">{r.title}</h3>
-                                  <p className="text-sm text-foreground-muted mt-1">{r.description}</p>
-                                </div>
-                                <button
-                                  onClick={() => setExpandedResource(null)}
-                                  className="p-2 rounded-lg hover:bg-surface-alt transition-colors"
-                                >
-                                  <X className="h-5 w-5 text-foreground-muted" />
-                                </button>
+                {/* ── 4 Video visibili ── */}
+                <Card className="p-5 sm:p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <img src="/icons/thiings/television.png" alt="" className="w-7 h-7 object-contain" />
+                    <h3 className="text-lg font-semibold">Video consigliati</h3>
+                    <span className="ml-auto text-xs text-foreground-muted">{featuredVideos.length}/4</span>
+                  </div>
+
+                  {featuredVideos.length > 0 ? (
+                    <div className="grid gap-3 grid-cols-1 sm:grid-cols-2">
+                      {featuredVideos.map((video) => (
+                        <a
+                          key={video.id}
+                          href={video.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="rounded-xl border border-border bg-white p-4 hover:border-viola/40 hover:bg-viola/5 transition-all group"
+                        >
+                          <div className="flex items-start gap-3">
+                            <img src="/icons/thiings/video.png" alt="" className="w-10 h-10 object-contain shrink-0" />
+                            <div className="min-w-0 flex-1">
+                              <p className="text-xs text-foreground-muted mb-1 line-clamp-1">{video.moduleTitle}</p>
+                              <h4 className="font-semibold text-sm line-clamp-2 group-hover:text-viola transition-colors">{video.title}</h4>
+                              <p className="text-xs text-foreground-muted mt-1 line-clamp-2">{video.description}</p>
+                            </div>
+                            <ChevronRight className="h-4 w-4 text-foreground-muted group-hover:text-viola shrink-0 mt-0.5" />
+                          </div>
+                        </a>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-sm text-foreground-muted">Nessun video disponibile al momento.</p>
+                  )}
+                </Card>
+
+                {/* ── Per-Module Resources ── */}
+                <Card className="p-5 sm:p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <img src="/icons/thiings/book.png" alt="" className="w-7 h-7 object-contain" />
+                    <h3 className="text-lg font-semibold">Risorse per Modulo</h3>
+                  </div>
+                  <p className="text-sm text-foreground-muted mb-4">
+                    Ogni modulo ha risorse specifiche di approfondimento: tool, link, corsi e video selezionati.
+                  </p>
+                  <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+                    {modules.map((mod, idx) => {
+                      const toolCount = mod.resources.filter(r => r.type === "tool").length;
+                      const linkCount = mod.resources.filter(r => r.type === "link").length;
+                      const videoCount = mod.resources.filter(r => r.type === "video").length;
+                      return (
+                        <Card
+                          key={mod.id}
+                          className="p-0 overflow-hidden hover:border-border hover:shadow-md transition-all cursor-pointer group"
+                          onClick={() => router.push(`/modulo/${mod.id}`)}
+                        >
+                          <div className="p-4">
+                            <div className="flex items-center gap-3 mb-3">
+                              <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-surface-alt text-foreground text-sm font-bold border border-border">
+                                {idx + 1}
+                              </span>
+                              <h4 className="font-semibold text-sm transition-colors line-clamp-1">
+                                {mod.title}
+                              </h4>
+                            </div>
+                            <div className="flex items-center gap-3 text-xs text-foreground-muted">
+                              {toolCount > 0 && (
+                                <span className="flex items-center gap-1">
+                                  <img src="/icons/thiings/toolbox.png" alt="" className="w-4 h-4 object-contain" /> {toolCount}
+                                </span>
+                              )}
+                              {linkCount > 0 && (
+                                <span className="flex items-center gap-1">
+                                  <img src="/icons/thiings/desktop.png" alt="" className="w-4 h-4 object-contain" /> {linkCount}
+                                </span>
+                              )}
+                              {videoCount > 0 && (
+                                <span className="flex items-center gap-1">
+                                  <img src="/icons/thiings/video.png" alt="" className="w-4 h-4 object-contain" /> {videoCount}
+                                </span>
+                              )}
+                              <span className="ml-auto text-[11px] bg-surface-alt px-2 py-0.5 rounded-full">
+                                {mod.resources.length} risors{mod.resources.length === 1 ? "a" : "e"}
+                              </span>
+                            </div>
+                          </div>
+                        </Card>
+                      );
+                    })}
+                  </div>
+                </Card>
+
+                {/* ── Category tabs (existing resources) ── */}
+                <Card className="p-5 sm:p-6">
+                  <div className="flex items-center gap-3 mb-4">
+                    <img src="/icons/thiings/tool-belt.png" alt="" className="w-7 h-7 object-contain" />
+                    <h3 className="text-lg font-semibold">Materiali Operativi</h3>
+                  </div>
+                  <p className="text-sm text-foreground-muted mb-4">
+                    Guide pratiche, cheat sheet, checklist e link curati selezionati dal team Clarivio.
+                  </p>
+                  
+                  <div className="flex flex-wrap gap-2 mb-5">
+                    {resourceLibrary.map((cat, i) => (
+                      <button
+                        key={cat.category}
+                        onClick={() => setSelectedResourceCat(i)}
+                        className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-medium transition-all cursor-pointer ${
+                          selectedResourceCat === i
+                            ? "bg-viola text-white shadow-sm"
+                            : "bg-surface border border-border text-foreground-muted hover:bg-surface-alt hover:border-viola/30"
+                        }`}
+                      >
+                        <img src={cat.icon} alt="" className="h-4 w-4 object-contain" />
+                        {cat.category}
+                        <span className={`text-[10px] rounded-full px-1.5 py-0.5 font-bold ${
+                          selectedResourceCat === i ? "bg-white/20" : "bg-viola/10 text-viola"
+                        }`}>
+                          {cat.resources.length}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+
+                  {/* Full-width resource list (no modal) */}
+                  <div className="space-y-3">
+                    {resourceLibrary[selectedResourceCat].resources.map((r) => {
+                      const isExpanded = expandedResource === r.title;
+                      const typeIcon = r.type === "pdf" ? "/icons/thiings/novel.png" :
+                                       r.type === "checklist" ? "/icons/thiings/checklist.png" : "/icons/thiings/desktop.png";
+                      const typeLabel = r.type === "pdf" ? "Guida" : r.type === "checklist" ? "Checklist" : "Link";
+
+                      return (
+                        <Card key={r.title} className="p-0 overflow-hidden transition-all">
+                          {/* Clickable header row */}
+                          <div
+                            className="flex items-center gap-4 p-4 sm:p-5 cursor-pointer hover:bg-surface/50 transition-colors group"
+                            onClick={() => setExpandedResource(isExpanded ? null : r.title)}
+                          >
+                            {/* 3D Icon */}
+                            <img src={typeIcon} alt="" className="w-12 h-12 object-contain shrink-0" />
+
+                            {/* Content */}
+                            <div className="flex-1 min-w-0">
+                              <span className="inline-block text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-md font-semibold mb-1 bg-surface-alt text-foreground-muted border border-border">
+                                {typeLabel}
+                              </span>
+                              <h3 className="font-semibold text-sm sm:text-base group-hover:text-viola transition-colors">
+                                {r.title}
+                              </h3>
+                              <p className="text-xs text-foreground-muted line-clamp-1 mt-0.5">
+                                {r.description}
+                              </p>
+                            </div>
+
+                            {/* Expand indicator */}
+                            <ChevronRight className={`h-5 w-5 text-foreground-muted shrink-0 transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`} />
+                          </div>
+
+                          {/* Expanded content (inline, no modal) */}
+                          {isExpanded && (
+                            <div className="border-t border-border bg-surface/30">
+                              <div className="p-5 sm:p-6 space-y-4">
+                                <p className="text-sm text-foreground-muted">{r.description}</p>
+
+                                {/* Text content */}
+                                {r.content && !r.links && (
+                                  <div className="bg-surface-alt rounded-xl p-4 border border-border">
+                                    <StructuredDocument content={r.content} />
+                                  </div>
+                                )}
+
+                                {/* Links list */}
+                                {r.links && (
+                                  <div className="space-y-2">
+                                    <p className="text-sm text-foreground-muted">{r.content}</p>
+                                    {r.links.map((link) => (
+                                      <a
+                                        key={link.name}
+                                        href={link.url}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex items-center gap-3 p-3 rounded-xl bg-white border border-border hover:border-viola/50 hover:bg-viola/5 transition-all group/link"
+                                      >
+                                        <div className="w-9 h-9 rounded-lg bg-viola/10 flex items-center justify-center shrink-0 group-hover/link:bg-viola/20 transition-colors">
+                                          <img src="/icons/thiings/book-launch.png" alt="" className="w-5 h-5 object-contain" />
+                                        </div>
+                                        <div className="flex-1 min-w-0">
+                                          <p className="font-semibold text-sm group-hover/link:text-viola transition-colors">{link.name}</p>
+                                          <p className="text-xs text-foreground-muted truncate">{link.desc}</p>
+                                        </div>
+                                        <ChevronRight className="h-4 w-4 text-foreground-muted group-hover/link:text-viola transition-colors shrink-0" />
+                                      </a>
+                                    ))}
+                                  </div>
+                                )}
+
+                                {/* Copy button */}
+                                {r.content && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation();
+                                      navigator.clipboard.writeText(r.content!);
+                                      setCopiedResource(r.title);
+                                      setTimeout(() => setCopiedResource(null), 2000);
+                                    }}
+                                    className={`w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 cursor-pointer ${
+                                      copiedResource === r.title
+                                        ? "bg-success/10 text-success"
+                                        : "bg-viola text-white hover:bg-viola/90"
+                                    }`}
+                                  >
+                                    {copiedResource === r.title ? (
+                                      <>
+                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                                        </svg>
+                                        Copiato negli appunti!
+                                      </>
+                                    ) : (
+                                      <>
+                                        <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                        </svg>
+                                        Copia contenuto
+                                      </>
+                                    )}
+                                  </button>
+                                )}
                               </div>
                             </div>
-                            
-                            {/* Content */}
-                            <div className="p-5 sm:p-6 overflow-y-auto max-h-[calc(85vh-200px)]">
-                              {r.content && !r.links && (
-                                <div className="bg-surface-alt rounded-xl p-4 border border-border">
-                                  <pre className="text-sm leading-relaxed whitespace-pre-wrap font-sans">
-                                    {r.content}
-                                  </pre>
-                                </div>
-                              )}
-
-                              {r.links && (
-                                <div className="space-y-3">
-                                  <p className="text-sm text-foreground-muted mb-4">{r.content}</p>
-                                  {r.links.map((link) => (
-                                    <a
-                                      key={link.name}
-                                      href={link.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="flex items-center gap-3 p-3 rounded-xl bg-surface border border-border hover:border-viola/50 hover:bg-viola/5 transition-all group"
-                                    >
-                                      <div className="w-10 h-10 rounded-lg bg-viola/10 flex items-center justify-center shrink-0 group-hover:bg-viola/20 transition-colors">
-                                        <ExternalLink className="h-5 w-5 text-viola" />
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <p className="font-semibold text-sm group-hover:text-viola transition-colors">{link.name}</p>
-                                        <p className="text-xs text-foreground-muted truncate">{link.desc}</p>
-                                      </div>
-                                      <ChevronRight className="h-4 w-4 text-foreground-muted group-hover:text-viola transition-colors" />
-                                    </a>
-                                  ))}
-                                </div>
-                              )}
-                            </div>
-
-                            {/* Footer */}
-                            <div className="p-5 sm:p-6 pt-0 border-t border-border mt-4">
-                              <button
-                                onClick={() => {
-                                  if (r.content) {
-                                    navigator.clipboard.writeText(r.content);
-                                    setCopiedResource(r.title);
-                                    setTimeout(() => setCopiedResource(null), 2000);
-                                  }
-                                }}
-                                className={`w-full py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-center gap-2 ${
-                                  copiedResource === r.title
-                                    ? "bg-success/10 text-success"
-                                    : "bg-viola text-white hover:bg-viola/90"
-                                }`}
-                              >
-                                {copiedResource === r.title ? (
-                                  <>
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                                    </svg>
-                                    Copiato negli appunti!
-                                  </>
-                                ) : (
-                                  <>
-                                    <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                                      <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                                    </svg>
-                                    Copia contenuto
-                                  </>
-                                )}
-                              </button>
-                            </div>
-                          </>
-                        );
-                      })()}
-                    </Card>
+                          )}
+                        </Card>
+                      );
+                    })}
                   </div>
-                )} 
+                </Card>
+
+                {/* ── Total summary ── */}
+                <div className="text-center pt-4 border-t border-border">
+                  <span className="text-xs text-foreground-muted">
+                    {modules.reduce((sum, m) => sum + m.resources.length, 0)} risorse per modulo
+                    {" · "}
+                    {resourceLibrary.reduce((sum, c) => sum + c.resources.length, 0)} materiali operativi
+                  </span>
+                </div>
               </div>
             )}
 
@@ -1568,4 +1621,63 @@ function getTimeAgo(timestamp: string): string {
   const days = Math.floor(hrs / 24);
   if (days === 1) return "Ieri";
   return `${days}g fa`;
+}
+
+function StructuredDocument({ content }: { content: string }) {
+  const lines = content.split("\n");
+
+  return (
+    <div className="space-y-2.5">
+      {lines.map((raw, i) => {
+        const line = raw.trim();
+
+        if (!line) {
+          return <div key={`sp-${i}`} className="h-1" />;
+        }
+
+        if (line.startsWith("# ")) {
+          return (
+            <h4 key={`h1-${i}`} className="text-base sm:text-lg font-bold text-foreground">
+              {line.replace(/^#\s+/, "")}
+            </h4>
+          );
+        }
+
+        if (line.startsWith("## ")) {
+          return (
+            <h5 key={`h2-${i}`} className="text-sm sm:text-base font-semibold text-viola pt-1">
+              {line.replace(/^##\s+/, "")}
+            </h5>
+          );
+        }
+
+        if (/^\d+\.\s+/.test(line)) {
+          const [num, ...rest] = line.split(" ");
+          return (
+            <div key={`n-${i}`} className="flex items-start gap-2 text-sm text-foreground-muted leading-relaxed">
+              <span className="shrink-0 mt-0.5 inline-flex h-5 w-5 items-center justify-center rounded-full bg-viola/10 text-[11px] font-bold text-viola">
+                {num.replace(".", "")}
+              </span>
+              <span>{rest.join(" ")}</span>
+            </div>
+          );
+        }
+
+        if (line.startsWith("-") || line.startsWith("•") || line.startsWith("□")) {
+          return (
+            <div key={`b-${i}`} className="flex items-start gap-2 text-sm text-foreground-muted leading-relaxed">
+              <span className="shrink-0 mt-2 h-1.5 w-1.5 rounded-full bg-viola/60" />
+              <span>{line.replace(/^[-•□]\s*/, "")}</span>
+            </div>
+          );
+        }
+
+        return (
+          <p key={`p-${i}`} className="text-sm text-foreground-muted leading-relaxed">
+            {line}
+          </p>
+        );
+      })}
+    </div>
+  );
 }

@@ -9,8 +9,9 @@ import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
 import ModuleContent from "@/components/Module/ModuleContent";
 import Quiz from "@/components/Module/Quiz";
+import ResourceViewer from "@/components/Module/ResourceViewer";
 
-type Phase = "reading" | "quiz";
+type Phase = "reading" | "resources" | "quiz";
 
 /** Split raw markdown content into sections by ### headers. */
 function splitContentSections(content: string): { title: string; body: string }[] {
@@ -152,6 +153,21 @@ export default function ModulePageClient() {
                   <span className="hidden sm:inline">Contenuto</span>
                 </button>
                 <button
+                  onClick={() => setPhase("resources")}
+                  className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer
+                    ${phase === "resources" ? "bg-viola text-white shadow-sm" : "text-foreground-muted hover:text-foreground"}`}
+                >
+                  <img src="/icons/pen.png" alt="" className="h-3.5 w-3.5 object-contain" />
+                  <span className="hidden sm:inline">Risorse</span>
+                  {mod.resources.length > 0 && (
+                    <span className={`ml-0.5 flex h-4 w-4 items-center justify-center rounded-full text-[9px] font-bold ${
+                      phase === "resources" ? "bg-white/20" : "bg-viola/10 text-viola"
+                    }`}>
+                      {mod.resources.length}
+                    </span>
+                  )}
+                </button>
+                <button
                   onClick={() => setPhase("quiz")}
                   className={`flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs font-medium transition-all cursor-pointer
                     ${phase === "quiz" ? "bg-viola text-white shadow-sm" : "text-foreground-muted hover:text-foreground"}`}
@@ -289,6 +305,15 @@ export default function ModulePageClient() {
                   </Button>
                 )}
               </div>
+            </div>
+          ) : phase === "resources" ? (
+            <div className="py-6 sm:py-8">
+              <Card className="p-4 sm:p-6 lg:p-8">
+                <ResourceViewer
+                  resources={mod.resources}
+                  moduleTitle={mod.title}
+                />
+              </Card>
             </div>
           ) : (
             <div className="py-6 sm:py-8">
