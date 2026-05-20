@@ -22,7 +22,7 @@ export async function GET() {
       take: 50,
     });
 
-    const leaderboard = users.map((user, index) => ({
+    const leaderboard = users.map((user: typeof users[number], index: number) => ({
       rank: index + 1,
       id: user.id,
       nome: user.nome,
