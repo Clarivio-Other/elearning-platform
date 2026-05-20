@@ -4,7 +4,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Clarivio — School, Webinar & Community",
+  title: "Clarivio Learn",
   description: "La piattaforma della community Clarivio: corsi interattivi, webinar, toolkit e risorse per padroneggiare l'AI generativa.",
 };
 
