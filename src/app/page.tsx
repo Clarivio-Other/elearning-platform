@@ -1566,7 +1566,7 @@ export default function DashboardPage() {
             )}
 
             {/* ═══════════ COMING SOON SECTIONS ═══════════ */}
-            {activeSection !== "school" && activeSection !== "toolkit" && activeSection !== "risorse" && activeSection !== "profilo" && comingSoonData[activeSection] && (
+            {activeSection !== "learn" && activeSection !== "toolkit" && activeSection !== "risorse" && activeSection !== "profilo" && comingSoonData[activeSection] && (
               <div className="space-y-6">
                 <div className="text-center py-8 sm:py-12">
                   {/* Lock badge */}
