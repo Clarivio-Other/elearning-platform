@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Download, Mail, Check } from "lucide-react";
+import { ArrowLeft, Download, Mail, Check, Award } from "lucide-react";
 import { useLearning } from "@/context/LearningContext";
 import { useAuth } from "@/context/AuthContext";
 import { modules } from "@/data/modules";
@@ -35,25 +35,21 @@ export default function CertificatePage() {
 
   const handleDownloadPDF = async () => {
     if (!certRef.current) return;
-
     const html2canvas = (await import("html2canvas")).default;
     const { jsPDF } = await import("jspdf");
-
     const canvas = await html2canvas(certRef.current, {
       scale: 2,
       backgroundColor: "#ffffff",
       useCORS: true,
     });
-
     const imgData = canvas.toDataURL("image/png");
     const pdf = new jsPDF({
       orientation: "landscape",
       unit: "px",
       format: [canvas.width, canvas.height],
     });
-
     pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save(`attestato-${progress.userName || "studente"}.pdf`);
+    pdf.save(`attestato-clarivio-${progress.userName?.replace(/\s+/g, "-").toLowerCase() || "studente"}.pdf`);
   };
 
   const handleSendEmail = async () => {
@@ -83,9 +79,13 @@ export default function CertificatePage() {
     }
   };
 
+  const maxTotalCredits = modules.reduce((sum, m) => sum + m.maxCredits, 0);
+  const avgScore = Math.round((progress.totalCredits / maxTotalCredits) * 100);
+
   return (
-    <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10">
-      <div className="mx-auto max-w-5xl space-y-6">
+    <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10 bg-gradient-to-b from-slate-50 to-white min-h-screen">
+      <div className="mx-auto max-w-6xl space-y-6">
+        {/* Top bar */}
         <div className="flex items-center justify-between gap-2">
           <Button variant="ghost" size="sm" onClick={() => router.push("/")}>
             <ArrowLeft className="h-4 w-4" />
@@ -115,97 +115,181 @@ export default function CertificatePage() {
           </div>
         </div>
 
-        {/* Certificate */}
+        {/* ─── CERTIFICATE ─── */}
         <div
           ref={certRef}
-          className="relative overflow-hidden rounded-2xl border-2 border-viola/30 bg-white p-6 sm:p-8 lg:p-12 shadow-lg"
+          className="relative overflow-hidden bg-white shadow-2xl"
+          style={{ fontFamily: "'Poppins', sans-serif" }}
         >
-          {/* Decorative corners */}
-          <div className="absolute top-0 left-0 h-24 w-24 border-t-4 border-l-4 border-viola rounded-tl-2xl" />
-          <div className="absolute top-0 right-0 h-24 w-24 border-t-4 border-r-4 border-viola rounded-tr-2xl" />
-          <div className="absolute bottom-0 left-0 h-24 w-24 border-b-4 border-l-4 border-viola rounded-bl-2xl" />
-          <div className="absolute bottom-0 right-0 h-24 w-24 border-b-4 border-r-4 border-viola rounded-br-2xl" />
+          {/* Top accent band */}
+          <div className="h-3 w-full bg-gradient-to-r from-[#4f2ee8] via-[#7c5af6] to-[#4f2ee8]" />
 
-          {/* Content */}
-          <div className="relative text-center space-y-6">
-            {/* Icon */}
-            <div className="flex justify-center">
-              <div className="flex h-16 w-16 sm:h-20 sm:w-20 items-center justify-center rounded-full">
-                <img src="/icons/trophy.png" alt="Attestato" className="h-16 w-16 sm:h-20 sm:w-20 object-contain" />
-              </div>
-            </div>
+          {/* Watermark background */}
+          <div
+            className="absolute inset-0 opacity-[0.025] pointer-events-none flex items-center justify-center"
+            aria-hidden
+          >
+            <img src="/logo/Logo_clarivio.svg" alt="" className="w-[600px]" />
+          </div>
 
-            {/* Title */}
-            <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-foreground-muted">
-                Attestato di
-              </p>
-              <h1 className="mt-2 text-3xl sm:text-4xl font-bold bg-gradient-to-r from-viola to-viola-light bg-clip-text text-transparent">
-                Fine Percorso
-              </h1>
-            </div>
+          {/* Corner ornaments */}
+          <div className="absolute top-3 left-0 w-40 h-40 border-t-[3px] border-l-[3px] border-[#4f2ee8]/20" />
+          <div className="absolute top-3 right-0 w-40 h-40 border-t-[3px] border-r-[3px] border-[#4f2ee8]/20" />
+          <div className="absolute bottom-0 left-0 w-40 h-40 border-b-[3px] border-l-[3px] border-[#4f2ee8]/20" />
+          <div className="absolute bottom-0 right-0 w-40 h-40 border-b-[3px] border-r-[3px] border-[#4f2ee8]/20" />
 
-            {/* Divider */}
-            <div className="mx-auto h-px w-32 bg-gradient-to-r from-transparent via-viola to-transparent" />
-
-            {/* Conferito a */}
-            <div>
-              <p className="text-sm text-foreground-muted">
-                Conferito a
-              </p>
-              <p className="mt-2 text-2xl sm:text-3xl font-bold italic" style={{ fontFamily: "'Newsreader', serif" }}>
-                {progress.userName || "Studente"}
-              </p>
-            </div>
-
-            {/* Description */}
-            <p className="mx-auto max-w-lg text-foreground-muted">
-              Per aver completato con successo tutti i moduli del percorso formativo
-              Clarivio School, dimostrando impegno e competenza nell&apos;uso dell&apos;AI generativa.
-            </p>
-
-            {/* Modules completed */}
-            <div className="mx-auto max-w-md space-y-2">
-              {modules.map((mod) => {
-                const score = progress.moduleScores[mod.id];
-                return (
-                  <div
-                    key={mod.id}
-                    className="flex items-center justify-between rounded-xl bg-surface px-4 py-2 text-sm"
-                  >
-                    <span>{mod.title}</span>
-                    <span className="font-semibold text-viola">
-                      {score ? `${score.score}/${score.maxCredits}` : "-"}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Total & date */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm">
-              <div>
-                <span className="text-foreground-muted">Crediti totali: </span>
-                <span className="font-bold text-viola">
-                  {progress.totalCredits}
+          <div className="relative px-10 sm:px-16 lg:px-24 py-10 sm:py-14">
+            {/* Header row: logo + badge */}
+            <div className="flex items-start justify-between mb-10">
+              <img src="/logo/Logo_clarivio.svg" alt="Clarivio" className="h-8 sm:h-10 opacity-90" />
+              <div className="flex flex-col items-end gap-1">
+                <span className="text-[10px] sm:text-xs uppercase tracking-[0.25em] text-slate-400 font-medium">
+                  Attestato Ufficiale
+                </span>
+                <span className="text-[10px] sm:text-xs text-slate-300 tabular-nums">
+                  CL-{new Date().getFullYear()}-{String(progress.totalCredits).padStart(4, "0")}
                 </span>
               </div>
-              <div>
-                <span className="text-foreground-muted">Data: </span>
-                <span className="font-bold">{completionDate}</span>
-              </div>
             </div>
 
-            {/* Platform name */}
-            <div className="flex flex-col items-center gap-2">
-              <img src="/logo/Logo_clarivio.svg" alt="Clarivio" className="h-6 opacity-60" />
-              <p className="text-xs text-foreground-muted tracking-widest uppercase">
-                Clarivio School — AI Generativa per Professionisti
-              </p>
+            {/* Main content */}
+            <div className="text-center space-y-6 sm:space-y-8">
+              {/* Award icon */}
+              <div className="flex justify-center">
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-[#4f2ee8]/10 blur-xl scale-150" />
+                  <div className="relative flex h-20 w-20 sm:h-24 sm:w-24 items-center justify-center rounded-full bg-gradient-to-br from-[#4f2ee8]/10 to-[#7c5af6]/10 ring-2 ring-[#4f2ee8]/20">
+                    <img src="/icons/trophy.png" alt="" className="h-12 w-12 sm:h-14 sm:w-14 object-contain" />
+                  </div>
+                </div>
+              </div>
+
+              {/* Heading */}
+              <div className="space-y-1">
+                <p className="text-xs sm:text-sm uppercase tracking-[0.35em] text-slate-400 font-medium">
+                  Clarivio Learn certifica che
+                </p>
+                <h1
+                  className="text-4xl sm:text-5xl lg:text-6xl font-bold text-slate-800 mt-3"
+                  style={{ fontFamily: "'Newsreader', serif", fontStyle: "italic" }}
+                >
+                  {progress.userName || `${profile?.nome} ${profile?.cognome}`}
+                </h1>
+              </div>
+
+              {/* Divider with star */}
+              <div className="flex items-center justify-center gap-4">
+                <div className="h-px flex-1 max-w-[120px] bg-gradient-to-r from-transparent to-[#4f2ee8]/30" />
+                <Award className="h-5 w-5 text-[#4f2ee8]/50" />
+                <div className="h-px flex-1 max-w-[120px] bg-gradient-to-l from-transparent to-[#4f2ee8]/30" />
+              </div>
+
+              {/* Description */}
+              <div className="space-y-2">
+                <p className="text-sm sm:text-base text-slate-500 leading-relaxed max-w-2xl mx-auto">
+                  ha completato con successo il percorso formativo
+                </p>
+                <p
+                  className="text-2xl sm:text-3xl font-bold text-[#4f2ee8]"
+                  style={{ letterSpacing: "-0.02em" }}
+                >
+                  AI Generativa per Professionisti
+                </p>
+                <p className="text-xs sm:text-sm text-slate-400 max-w-xl mx-auto leading-relaxed mt-2">
+                  dimostrando piena padronanza degli strumenti, delle tecniche e delle applicazioni
+                  dell&apos;intelligenza artificiale generativa nel contesto professionale.
+                </p>
+              </div>
+
+              {/* Stats row */}
+              <div className="flex flex-wrap items-center justify-center gap-6 sm:gap-10 py-4">
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-[#4f2ee8]">{progress.totalCredits}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Crediti XP</div>
+                </div>
+                <div className="h-10 w-px bg-slate-200" />
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-[#4f2ee8]">{modules.length}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Moduli</div>
+                </div>
+                <div className="h-10 w-px bg-slate-200" />
+                <div className="text-center">
+                  <div className="text-2xl sm:text-3xl font-bold text-[#4f2ee8]">{avgScore}%</div>
+                  <div className="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Media</div>
+                </div>
+                <div className="h-10 w-px bg-slate-200" />
+                <div className="text-center">
+                  <div className="text-sm sm:text-base font-bold text-slate-700">{completionDate}</div>
+                  <div className="text-[11px] uppercase tracking-wider text-slate-400 mt-0.5">Data</div>
+                </div>
+              </div>
+
+              {/* Module scores grid */}
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-w-2xl mx-auto">
+                {modules.map((mod, i) => {
+                  const sc = progress.moduleScores[mod.id];
+                  const pct = sc ? Math.round((sc.score / sc.maxCredits) * 100) : 0;
+                  return (
+                    <div
+                      key={mod.id}
+                      className="flex items-center gap-2 rounded-xl bg-slate-50 border border-slate-100 px-3 py-2"
+                    >
+                      <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg bg-[#4f2ee8]/10 text-[#4f2ee8] text-[10px] font-bold">
+                        {i + 1}
+                      </span>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-medium text-slate-700 truncate leading-tight">{mod.title}</p>
+                        <p className="text-[10px] text-[#4f2ee8] font-bold">{pct}%</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+
+              {/* Signature row */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 sm:gap-16 pt-4 border-t border-slate-100 mt-4">
+                <div className="text-center">
+                  <div
+                    className="text-2xl sm:text-3xl text-slate-700 mb-1"
+                    style={{ fontFamily: "'Newsreader', serif", fontStyle: "italic" }}
+                  >
+                    Clarivio Team
+                  </div>
+                  <div className="h-px w-40 bg-slate-200 mx-auto mb-1.5" />
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Responsabile Formazione</p>
+                </div>
+                {/* Seal */}
+                <div className="relative flex items-center justify-center">
+                  <div className="h-20 w-20 rounded-full border-2 border-dashed border-[#4f2ee8]/30 flex items-center justify-center">
+                    <div className="h-14 w-14 rounded-full bg-[#4f2ee8]/5 border border-[#4f2ee8]/20 flex items-center justify-center">
+                      <img src="/logo/Logo.png" alt="Sigillo Clarivio" className="h-8 w-8 object-contain opacity-60" />
+                    </div>
+                  </div>
+                </div>
+                <div className="text-center">
+                  <div
+                    className="text-2xl sm:text-3xl text-slate-700 mb-1"
+                    style={{ fontFamily: "'Newsreader', serif", fontStyle: "italic" }}
+                  >
+                    Clarivio Learn
+                  </div>
+                  <div className="h-px w-40 bg-slate-200 mx-auto mb-1.5" />
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Piattaforma Formativa</p>
+                </div>
+              </div>
             </div>
           </div>
+
+          {/* Bottom accent band */}
+          <div className="h-1.5 w-full bg-gradient-to-r from-[#4f2ee8]/30 via-[#4f2ee8] to-[#4f2ee8]/30" />
         </div>
+
+        {/* Info under certificate */}
+        <p className="text-center text-xs text-slate-400 pb-4">
+          Questo attestato è rilasciato da Clarivio e certifica il completamento del percorso formativo su learn.clarivio.it
+        </p>
       </div>
     </main>
   );
 }
+

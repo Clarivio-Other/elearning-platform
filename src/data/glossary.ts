@@ -303,6 +303,32 @@ export const glossary: GlossaryTerm[] = [
   },
 ];
 
+// ── Inline matching helpers ──
+
+/** Builds (and caches) a global regex matching all terms + aliases, longest first. */
+let _cachedRegexSource: string | null = null;
+
+export function getGlossaryRegex(): RegExp {
+  if (!_cachedRegexSource) {
+    const allVariants = glossary.flatMap((g) => [g.term, ...(g.aliases ?? [])]);
+    const escaped = allVariants
+      .sort((a, b) => b.length - a.length)
+      .map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+    _cachedRegexSource = `\\b(${escaped.join("|")})\\b`;
+  }
+  return new RegExp(_cachedRegexSource, "gi");
+}
+
+/** Returns the GlossaryTerm matching a given text (term name or alias). */
+export function getTermByMatch(matchedText: string): GlossaryTerm | undefined {
+  const lower = matchedText.toLowerCase();
+  return glossary.find(
+    (g) =>
+      g.term.toLowerCase() === lower ||
+      (g.aliases ?? []).some((a) => a.toLowerCase() === lower)
+  );
+}
+
 /**
  * Finds all glossary terms present in a given text (case-insensitive, whole-word matching).
  */

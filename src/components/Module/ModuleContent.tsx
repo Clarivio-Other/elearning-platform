@@ -1,3 +1,5 @@
+import { getGlossaryRegex, getTermByMatch } from "@/data/glossary";
+
 interface ModuleContentProps {
   content: string;
 }
@@ -107,5 +109,20 @@ function inlineFormat(text: string): string {
     /\*(.+?)\*/g,
     '<em class="italic" style="font-family: Newsreader, serif">$1</em>'
   );
+  // Glossary inline tooltips (only on text nodes, not inside HTML tags)
+  result = result.split(/(<[^>]*>)/g).map((part, i) => {
+    if (i % 2 === 1) return part; // HTML tag — leave untouched
+    return part.replace(getGlossaryRegex(), (match) => {
+      const term = getTermByMatch(match);
+      if (!term) return match;
+      const shortDef =
+        term.definition.length > 150
+          ? term.definition.slice(0, 150) + "…"
+          : term.definition;
+      const esc = (s: string) =>
+        s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+      return `<span class="gl-term" tabindex="0">${esc(match)}<sup class="gl-icon">ⓘ</sup><span class="gl-popup" role="tooltip"><strong>${esc(term.term)}</strong><br><span>${esc(shortDef)}</span></span></span>`;
+    });
+  }).join("");
   return result;
 }

@@ -96,3 +96,58 @@ body {
   body { background: white; }
   .no-print { display: none !important; }
 }
+
+/* ── Glossary inline term tooltips ── */
+.gl-term {
+  position: relative;
+  display: inline;
+  border-bottom: 1.5px dotted var(--color-viola);
+  cursor: help;
+}
+.gl-icon {
+  font-size: 0.65em;
+  color: var(--color-viola);
+  vertical-align: super;
+  margin-left: 1px;
+  font-style: normal;
+  font-weight: 400;
+}
+.gl-popup {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 8px 12px;
+  font-size: 12px;
+  line-height: 1.55;
+  color: var(--color-foreground);
+  min-width: 180px;
+  max-width: 260px;
+  width: max-content;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  pointer-events: none;
+  white-space: normal;
+  font-weight: 400;
+  font-style: normal;
+}
+.gl-popup::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: #ffffff;
+  filter: drop-shadow(0 1px 0 var(--color-border));
+}
+.gl-term:hover .gl-popup,
+.gl-term:focus .gl-popup,
+.gl-term:focus-within .gl-popup {
+  display: block;
+}

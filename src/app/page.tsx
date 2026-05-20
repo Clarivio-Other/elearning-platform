@@ -613,7 +613,7 @@ export default function DashboardPage() {
         </div>
 
         <div className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
-          <div className="mx-auto max-w-3xl space-y-6 sm:space-y-8">
+          <div className="w-full space-y-6 sm:space-y-8">
 
             {/* ═══════════ LEARN SECTION ═══════════ */}
             {activeSection === "learn" && (
