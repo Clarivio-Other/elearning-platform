@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { GoogleLogin, type CredentialResponse } from "@react-oauth/google";
+
+const EINSTEIN_IMG = "https://lftz25oez4aqbxpq.public.blob.vercel-storage.com/image-fJV4yQH9mUdahQ7NUaPm0gtBp7WNfd.png";
 
 const RUOLI = [
   "Imprenditore",
@@ -29,10 +32,11 @@ interface AuthFormsProps {
     profilingConsent: boolean;
   }) => Promise<void>;
   onLogin: (email: string, password: string) => Promise<void>;
+  onGoogleLogin: (credential: string) => Promise<void>;
   error: string;
 }
 
-export default function AuthForms({ onRegister, onLogin, error }: AuthFormsProps) {
+export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }: AuthFormsProps) {
   const [mode, setMode] = useState<"login" | "register">("login");
   const [loading, setLoading] = useState(false);
 
@@ -136,7 +140,7 @@ export default function AuthForms({ onRegister, onLogin, error }: AuthFormsProps
         {/* Header */}
         <div className="text-center mb-8">
           <div className="flex justify-center mb-4">
-            <img src="/icons/robot.png" alt="Clarivio" className="h-16 w-16 object-contain" />
+            <img src={EINSTEIN_IMG} alt="Clarivio Learn" className="h-20 w-20 object-contain drop-shadow-md" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             {mode === "login" ? "Accedi a" : "Registrati su"} Clarivio<span className="text-viola">.</span>
@@ -190,6 +194,31 @@ export default function AuthForms({ onRegister, onLogin, error }: AuthFormsProps
             >
               {loading ? "Accesso in corso..." : "Accedi"}
             </button>
+
+            {/* Divider */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-border" />
+              <span className="text-xs text-foreground-muted">oppure</span>
+              <div className="h-px flex-1 bg-border" />
+            </div>
+
+            {/* Google login */}
+            <div className="flex justify-center">
+              <GoogleLogin
+                onSuccess={(credentialResponse: CredentialResponse) => {
+                  if (credentialResponse.credential) {
+                    setLoading(true);
+                    onGoogleLogin(credentialResponse.credential).finally(() => setLoading(false));
+                  }
+                }}
+                onError={() => undefined}
+                width="100%"
+                text="continue_with"
+                shape="rectangular"
+                logo_alignment="left"
+              />
+            </div>
+
             <p className="text-center text-sm text-foreground-muted">
               Non hai un account?{" "}
               <button

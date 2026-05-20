@@ -4,7 +4,7 @@ import {
   createContext, useContext, useState, useEffect, useCallback, type ReactNode,
 } from "react";
 import { UserProfile } from "@/types";
-import { apiGetMe, apiLogin, apiRegister, apiLogout, apiUpdateProfile, getToken, ApiError, type ApiUser } from "@/lib/api-client";
+import { apiGetMe, apiLogin, apiRegister, apiLogout, apiUpdateProfile, apiGoogleLogin, getToken, ApiError, type ApiUser } from "@/lib/api-client";
 import AuthForms from "@/components/Auth/AuthForms";
 
 interface AuthContextValue {
@@ -81,6 +81,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     apiUpdateProfile(updates).catch(console.error);
   }, []);
 
+  const handleGoogleLogin = useCallback(async (credential: string) => {
+    try {
+      setAuthError("");
+      const res = await apiGoogleLogin(credential);
+      setProfile(apiUserToProfile(res.user));
+    } catch (err) {
+      if (err instanceof ApiError) setAuthError(err.message);
+      else setAuthError("Errore di connessione con Google. Riprova.");
+      throw err;
+    }
+  }, []);
+
   const logout = useCallback(() => { apiLogout(); setProfile(null); }, []);
 
   if (profile === "loading") {
@@ -88,7 +100,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   if (!profile) {
-    return <AuthForms onRegister={handleRegister} onLogin={handleLogin} error={authError} />;
+    return <AuthForms onRegister={handleRegister} onLogin={handleLogin} onGoogleLogin={handleGoogleLogin} error={authError} />;
   }
 
   return (<AuthContext.Provider value={{ profile, updateProfile, logout }}>{children}</AuthContext.Provider>);

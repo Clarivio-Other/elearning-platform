@@ -119,6 +119,15 @@ export async function apiLogin(
   return res;
 }
 
+export async function apiGoogleLogin(credential: string): Promise<AuthResponse> {
+  const res = await apiFetch<AuthResponse>("/api/auth/google", {
+    method: "POST",
+    body: JSON.stringify({ credential }),
+  });
+  setToken(res.token);
+  return res;
+}
+
 export async function apiGetMe(): Promise<{ user: ApiUser }> {
   return apiFetch<{ user: ApiUser }>("/api/auth/me");
 }
