@@ -10,6 +10,7 @@ import Card from "@/components/ui/Card";
 import ModuleContent from "@/components/Module/ModuleContent";
 import Quiz from "@/components/Module/Quiz";
 import ResourceViewer from "@/components/Module/ResourceViewer";
+import GlossaryPanel from "@/components/Module/GlossaryPanel";
 
 type Phase = "reading" | "resources" | "quiz";
 
@@ -108,8 +109,19 @@ export default function ModulePageClient() {
 
   const moduleIndex = modules.findIndex((m) => m.id === moduleId);
 
+  // Full module content (all sections joined) for module-wide glossary
+  const fullModuleContent = sections.map((s) => s.body).join(" ");
+
   return (
     <>
+      {/* Dynamic Glossary Panel — visible during reading phase */}
+      {phase === "reading" && (
+        <GlossaryPanel
+          content={sections[currentSection]?.body ?? ""}
+          fullContent={fullModuleContent}
+        />
+      )}
+
       {/* Fixed reading progress bar at top */}
       <div className="fixed top-0 left-0 right-0 z-50 h-1 bg-surface-alt">
         <div

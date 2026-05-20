@@ -16,14 +16,14 @@ import Card from "@/components/ui/Card";
 import ModuleCard from "@/components/Dashboard/ModuleCard";
 import BadgeGrid from "@/components/Dashboard/BadgeGrid";
 
-type Section = "school" | "webinar" | "toolkit" | "risorse" | "profilo";
+type Section = "learn" | "webinar" | "toolkit" | "risorse" | "profilo";
 
 const ThIcon = ({ src, alt, className = "h-5 w-5" }: { src: string; alt: string; className?: string }) => (
   <img src={src} alt={alt} className={`${className} object-contain`} />
 );
 
 const sectionTabs: { id: Section; label: string; icon: React.ReactNode; active: boolean }[] = [
-  { id: "school", label: "School", icon: <ThIcon src="/icons/computer.png" alt="School" />, active: true },
+  { id: "learn", label: "Learn", icon: <ThIcon src="/icons/computer.png" alt="Learn" />, active: true },
   { id: "webinar", label: "Webinar", icon: <ThIcon src="/icons/keyboard.png" alt="Webinar" />, active: false },
   { id: "toolkit", label: "Toolkit", icon: <ThIcon src="/icons/gear.png" alt="Toolkit" />, active: true },
   { id: "risorse", label: "Risorse", icon: <ThIcon src="/icons/pen.png" alt="Risorse" />, active: true },
@@ -343,7 +343,7 @@ export default function DashboardPage() {
   const { progress, setUserName, reset, allModulesCompleted } = useLearning();
   const { profile, updateProfile, logout } = useAuth();
   const router = useRouter();
-  const [activeSection, setActiveSection] = useState<Section>("school");
+  const [activeSection, setActiveSection] = useState<Section>("learn");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [selectedPromptCat, setSelectedPromptCat] = useState(0);
@@ -615,8 +615,8 @@ export default function DashboardPage() {
         <div className="px-4 py-6 sm:px-6 lg:px-10 lg:py-8">
           <div className="mx-auto max-w-3xl space-y-6 sm:space-y-8">
 
-            {/* ═══════════ SCHOOL SECTION ═══════════ */}
-            {activeSection === "school" && (
+            {/* ═══════════ LEARN SECTION ═══════════ */}
+            {activeSection === "learn" && (
               <div className="space-y-6 sm:space-y-8">
 
                 {/* ── Motivational Quote ── */}
