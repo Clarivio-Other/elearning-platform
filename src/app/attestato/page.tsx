@@ -1,9 +1,10 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Download } from "lucide-react";
+import { ArrowLeft, Download, Mail, Check } from "lucide-react";
 import { useLearning } from "@/context/LearningContext";
+import { useAuth } from "@/context/AuthContext";
 import { modules } from "@/data/modules";
 import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
@@ -11,7 +12,9 @@ import Card from "@/components/ui/Card";
 export default function CertificatePage() {
   const router = useRouter();
   const { progress, allModulesCompleted, completionDate } = useLearning();
+  const { profile } = useAuth();
   const certRef = useRef<HTMLDivElement>(null);
+  const [emailState, setEmailState] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   if (!allModulesCompleted) {
     return (
@@ -53,6 +56,33 @@ export default function CertificatePage() {
     pdf.save(`attestato-${progress.userName || "studente"}.pdf`);
   };
 
+  const handleSendEmail = async () => {
+    if (!profile?.email) return;
+    setEmailState("sending");
+    try {
+      const res = await fetch("/api/certificate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          nome: profile.nome,
+          cognome: profile.cognome,
+          email: profile.email,
+          totalCredits: progress.totalCredits,
+          completionDate,
+          modules: modules.map((m) => ({
+            title: m.title,
+            score: progress.moduleScores[m.id]?.score ?? 0,
+            maxCredits: m.maxCredits,
+          })),
+        }),
+      });
+      const data = await res.json();
+      setEmailState(data.emailSent ? "sent" : "error");
+    } catch {
+      setEmailState("error");
+    }
+  };
+
   return (
     <main className="flex-1 px-4 py-6 sm:px-6 lg:px-10">
       <div className="mx-auto max-w-5xl space-y-6">
@@ -61,10 +91,28 @@ export default function CertificatePage() {
             <ArrowLeft className="h-4 w-4" />
             <span className="hidden sm:inline">Dashboard</span>
           </Button>
-          <Button size="sm" onClick={handleDownloadPDF}>
-            <Download className="h-4 w-4" />
-            Scarica PDF
-          </Button>
+          <div className="flex items-center gap-2">
+            {profile?.email && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={handleSendEmail}
+                disabled={emailState === "sending" || emailState === "sent"}
+              >
+                {emailState === "sent" ? (
+                  <><Check className="h-4 w-4 text-green-600" /> Inviato</>
+                ) : emailState === "sending" ? (
+                  <><Mail className="h-4 w-4 animate-pulse" /> Invio…</>
+                ) : (
+                  <><Mail className="h-4 w-4" /> Ricevi via email</>
+                )}
+              </Button>
+            )}
+            <Button size="sm" onClick={handleDownloadPDF}>
+              <Download className="h-4 w-4" />
+              Scarica PDF
+            </Button>
+          </div>
         </div>
 
         {/* Certificate */}

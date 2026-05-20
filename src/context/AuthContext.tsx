@@ -48,6 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setAuthError("");
       const res = await apiRegister(data);
       setProfile(apiUserToProfile(res.user));
+      // Fire-and-forget: salva su Supabase e manda email di benvenuto
+      fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      }).catch(() => undefined);
     } catch (err) {
       if (err instanceof ApiError) setAuthError(err.message);
       else setAuthError("Errore di connessione. Riprova.");
