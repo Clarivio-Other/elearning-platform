@@ -68,6 +68,7 @@ export default function RegistrationForm({ onRegister }: RegistrationFormProps) 
       privacyAccepted: form.privacyAccepted,
       privacyAcceptedAt: now,
       marketingConsent: form.marketingConsent,
+      isAdmin: false,
       marketingConsentAt: form.marketingConsent ? now : "",
       profilingConsent: form.profilingConsent,
       profilingConsentAt: form.profilingConsent ? now : "",

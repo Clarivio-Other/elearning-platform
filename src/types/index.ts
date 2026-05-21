@@ -33,6 +33,7 @@ export interface UserProfile {
   marketingConsentAt: string;
   profilingConsent: boolean;
   profilingConsentAt: string;
+  isAdmin: boolean;
 }
 
 export interface Module {

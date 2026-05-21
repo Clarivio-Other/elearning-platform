@@ -596,6 +596,16 @@ export default function DashboardPage() {
             <RotateCcw className="h-4 w-4 shrink-0" />
             <span className={`${sidebarCollapsed ? "lg:hidden" : ""}`}>Reset progresso</span>
           </button>
+
+          {/* Logout */}
+          <button
+            onClick={logout}
+            title={sidebarCollapsed ? "Esci" : undefined}
+            className={`flex items-center gap-2 w-full rounded-xl px-3 py-2 text-xs text-foreground-muted hover:bg-danger/10 hover:text-danger transition-colors cursor-pointer ${sidebarCollapsed ? "lg:justify-center lg:px-2" : ""}`}
+          >
+            <LogOut className="h-4 w-4 shrink-0" />
+            <span className={`${sidebarCollapsed ? "lg:hidden" : ""}`}>Esci</span>
+          </button>
         </div>
       </aside>
 
@@ -646,28 +656,6 @@ export default function DashboardPage() {
                     <div className="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-white/10" />
                   </div>
                 )}
-
-                {/* ── User Profile Card ── */}
-                <Card className="p-4 sm:p-5">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex items-center gap-3 min-w-0">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-viola/10 text-viola font-bold text-sm">
-                        {profile.nome[0]}{profile.cognome[0]}
-                      </div>
-                      <div className="min-w-0">
-                        <div className="font-semibold text-sm truncate">{profile.nome} {profile.cognome}</div>
-                        <div className="text-[11px] text-foreground-muted truncate">{profile.ruolo} · {profile.azienda}</div>
-                      </div>
-                    </div>
-                    <button
-                      onClick={logout}
-                      className="text-foreground-muted hover:text-danger transition-colors cursor-pointer shrink-0"
-                      title="Esci"
-                    >
-                      <LogOut className="h-4 w-4" />
-                    </button>
-                  </div>
-                </Card>
 
                 {/* ── Stats row — 3D icons + Streak ── */}
                 <div className="grid grid-cols-4 gap-2 sm:gap-3">

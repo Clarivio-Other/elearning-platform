@@ -31,6 +31,9 @@ model User {
   streak            Int       @default(0)
   lastActivityDate  String?
 
+  // Admin
+  isAdmin           Boolean   @default(false)
+
   createdAt         DateTime  @default(now())
   updatedAt         DateTime  @updatedAt
 

@@ -24,6 +24,7 @@ function apiUserToProfile(user: ApiUser): UserProfile {
     privacyAccepted: user.privacyAccepted, privacyAcceptedAt: user.privacyAcceptedAt,
     marketingConsent: user.marketingConsent, marketingConsentAt: user.marketingConsentAt,
     profilingConsent: user.profilingConsent, profilingConsentAt: user.profilingConsentAt,
+    isAdmin: user.isAdmin ?? false,
   };
 }
 

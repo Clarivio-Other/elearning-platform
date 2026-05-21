@@ -85,6 +85,7 @@ export interface ApiUser {
   marketingConsentAt: string;
   profilingConsent: boolean;
   profilingConsentAt: string;
+  isAdmin: boolean;
 }
 
 export async function apiRegister(data: {

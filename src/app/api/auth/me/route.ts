@@ -35,6 +35,7 @@ export async function GET(req: NextRequest) {
         marketingConsentAt: user.marketingConsentAt?.toISOString() || "",
         profilingConsent: user.profilingConsent,
         profilingConsentAt: user.profilingConsentAt?.toISOString() || "",
+        isAdmin: (user as Record<string, unknown>).isAdmin === true,
       },
     });
   } catch (error) {
