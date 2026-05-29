@@ -2,7 +2,7 @@
 
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Download, Mail, Check, Award } from "lucide-react";
+import { ArrowLeft, Download, Mail, Check, Award, Printer } from "lucide-react";
 import { useLearning } from "@/context/LearningContext";
 import { useAuth } from "@/context/AuthContext";
 import { modules } from "@/data/modules";
@@ -15,6 +15,49 @@ export default function CertificatePage() {
   const { profile } = useAuth();
   const certRef = useRef<HTMLDivElement>(null);
   const [emailState, setEmailState] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [pdfState, setPdfState] = useState<"idle" | "generating" | "fallback" | "error">("idle");
+  const [pdfErrorDetail, setPdfErrorDetail] = useState("");
+
+  const openBrowserPrintFallback = () => {
+    if (!certRef.current) return false;
+    const printWindow = window.open("", "_blank", "width=1280,height=920");
+    if (!printWindow) return false;
+
+    const styles = Array.from(document.querySelectorAll("style, link[rel='stylesheet']"))
+      .map((node) => node.outerHTML)
+      .join("\n");
+
+    printWindow.document.write(`
+      <!doctype html>
+      <html lang="it">
+        <head>
+          <meta charset="utf-8" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <title>Attestato Clarivio</title>
+          ${styles}
+          <style>
+            body { margin: 0; background: #ffffff; }
+            main { padding: 20px; }
+            @media print {
+              body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+              main { padding: 0; }
+            }
+          </style>
+        </head>
+        <body>
+          <main>${certRef.current.outerHTML}</main>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
+
+    printWindow.onload = () => {
+      printWindow.focus();
+      printWindow.print();
+    };
+
+    return true;
+  };
 
   if (!allModulesCompleted) {
     return (
@@ -35,21 +78,48 @@ export default function CertificatePage() {
 
   const handleDownloadPDF = async () => {
     if (!certRef.current) return;
-    const html2canvas = (await import("html2canvas")).default;
-    const { jsPDF } = await import("jspdf");
-    const canvas = await html2canvas(certRef.current, {
-      scale: 2,
-      backgroundColor: "#ffffff",
-      useCORS: true,
-    });
-    const imgData = canvas.toDataURL("image/png");
-    const pdf = new jsPDF({
-      orientation: "landscape",
-      unit: "px",
-      format: [canvas.width, canvas.height],
-    });
-    pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
-    pdf.save(`attestato-clarivio-${progress.userName?.replace(/\s+/g, "-").toLowerCase() || "studente"}.pdf`);
+    setPdfState("generating");
+    setPdfErrorDetail("");
+    try {
+      const html2canvas = (await import("html2canvas-pro")).default;
+      const jsPdfModule = await import("jspdf");
+      const PdfCtor = (jsPdfModule as unknown as { jsPDF?: new (...args: unknown[]) => {
+        addImage: (data: string, format: string, x: number, y: number, w: number, h: number) => void;
+        save: (filename: string) => void;
+      } }).jsPDF;
+
+      if (!PdfCtor) {
+        throw new Error("jsPDF non disponibile");
+      }
+
+      const canvas = await html2canvas(certRef.current, {
+        scale: Math.max(2, window.devicePixelRatio || 1),
+        backgroundColor: "#ffffff",
+        useCORS: true,
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new PdfCtor({
+        orientation: "landscape",
+        unit: "px",
+        format: [canvas.width, canvas.height],
+      });
+
+      pdf.addImage(imgData, "PNG", 0, 0, canvas.width, canvas.height);
+      pdf.save(`attestato-clarivio-${progress.userName?.replace(/\s+/g, "-").toLowerCase() || "studente"}.pdf`);
+      setPdfState("idle");
+    } catch (error) {
+      console.error("Errore download PDF:", error);
+      const detail = error instanceof Error ? error.message : "Errore sconosciuto";
+      setPdfErrorDetail(detail);
+      const opened = openBrowserPrintFallback();
+      setPdfState(opened ? "fallback" : "error");
+    }
+  };
+
+  const handlePrintPdf = () => {
+    const opened = openBrowserPrintFallback();
+    setPdfState(opened ? "fallback" : "error");
   };
 
   const handleSendEmail = async () => {
@@ -108,12 +178,28 @@ export default function CertificatePage() {
                 )}
               </Button>
             )}
-            <Button size="sm" onClick={handleDownloadPDF}>
-              <Download className="h-4 w-4" />
-              Scarica PDF
+            <Button size="sm" onClick={handleDownloadPDF} disabled={pdfState === "generating"}>
+              <Download className={`h-4 w-4 ${pdfState === "generating" ? "animate-pulse" : ""}`} />
+              {pdfState === "generating" ? "Generazione..." : "Scarica PDF"}
+            </Button>
+            <Button variant="ghost" size="sm" onClick={handlePrintPdf}>
+              <Printer className="h-4 w-4" />
+              Stampa / Salva PDF
             </Button>
           </div>
         </div>
+        {pdfState === "error" && (
+          <p className="text-sm text-red-600 text-center">
+            Errore durante la generazione del PDF.
+            {pdfErrorDetail ? ` Dettaglio: ${pdfErrorDetail}` : ""}
+          </p>
+        )}
+        {pdfState === "fallback" && (
+          <p className="text-sm text-amber-700 text-center">
+            Generazione PDF diretta non riuscita: aperta la finestra di stampa per salvare in PDF.
+            {pdfErrorDetail ? ` Dettaglio: ${pdfErrorDetail}` : ""}
+          </p>
+        )}
 
         {/* ─── CERTIFICATE ─── */}
         <div
@@ -253,10 +339,11 @@ export default function CertificatePage() {
                     className="text-2xl sm:text-3xl text-slate-700 mb-1"
                     style={{ fontFamily: "'Newsreader', serif", fontStyle: "italic" }}
                   >
-                    Clarivio Team
+                    Fabrizio Dodaro
                   </div>
                   <div className="h-px w-40 bg-slate-200 mx-auto mb-1.5" />
-                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Responsabile Formazione</p>
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400">CEO &amp; Responsabile Formazione</p>
+                  <p className="text-[10px] text-slate-300 mt-0.5">Clarivio Srl</p>
                 </div>
                 {/* Seal */}
                 <div className="relative flex items-center justify-center">
@@ -274,7 +361,8 @@ export default function CertificatePage() {
                     Clarivio Learn
                   </div>
                   <div className="h-px w-40 bg-slate-200 mx-auto mb-1.5" />
-                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Piattaforma Formativa</p>
+                  <p className="text-[11px] uppercase tracking-wider text-slate-400">Piattaforma Formativa Ufficiale</p>
+                  <p className="text-[10px] text-slate-300 mt-0.5">learn.clarivio.it</p>
                 </div>
               </div>
             </div>
@@ -282,11 +370,23 @@ export default function CertificatePage() {
 
           {/* Bottom accent band */}
           <div className="h-1.5 w-full bg-gradient-to-r from-[#4f2ee8]/30 via-[#4f2ee8] to-[#4f2ee8]/30" />
+
+          {/* Legal footer inside certificate */}
+          <div className="bg-slate-50 border-t border-slate-100 px-10 sm:px-16 lg:px-24 py-4 flex flex-col sm:flex-row items-center justify-between gap-2">
+            <div className="text-[10px] text-slate-400 text-center sm:text-left leading-relaxed">
+              <span className="font-semibold text-slate-500">Clarivio Srl</span>
+              {" · "}P.IVA IT03479880738
+            </div>
+            <div className="text-[10px] text-slate-400 text-center sm:text-right">
+              <span className="tabular-nums">ID: CL-{new Date().getFullYear()}-{String(progress.totalCredits).padStart(4, "0")}</span>
+              {" · "}Verificabile su <span className="text-[#4f2ee8]/70">learn.clarivio.it</span>
+            </div>
+          </div>
         </div>
 
         {/* Info under certificate */}
         <p className="text-center text-xs text-slate-400 pb-4">
-          Questo attestato è rilasciato da Clarivio e certifica il completamento del percorso formativo su learn.clarivio.it
+          Attestato ufficiale rilasciato da <strong>Clarivio Srl</strong> — P.IVA IT03479880738 — Certificazione completamento percorso formativo su learn.clarivio.it
         </p>
       </div>
     </main>

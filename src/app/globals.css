@@ -8,32 +8,37 @@ html {
 }
 
 @theme inline {
-  --color-viola: #7f5af0;
-  --color-viola-light: #9b7aff;
-  --color-viola-dark: #6b48d6;
-  --color-surface: #f8f9fb;
-  --color-surface-alt: #f3f4f6;
-  --color-border: #e5e7eb;
-  --color-border-strong: #d1d5db;
+  --color-viola: #6556F6;
+  --color-viola-light: #ECE9FF;
+  --color-viola-dark: #5244E0;
+  --color-surface: #F5F7FC;
+  --color-surface-alt: #F8FAFF;
+  --color-border: #DDE5F0;
+  --color-border-strong: #C5D3E5;
   --color-success: #00d294;
   --color-danger: #dc2626;
   --color-warning: #f99c00;
-  --color-foreground: #0f172a;
-  --color-foreground-muted: #6b7280;
+  --color-foreground: #0F172A;
+  --color-foreground-muted: #64748B;
   --color-accent-green: #00E5A0;
 }
 
 body {
-  background: #ffffff;
+  background: var(--color-surface);
   color: var(--color-foreground);
-  font-family: 'Poppins', sans-serif;
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Heading font */
+h1, h2, h3 {
+  font-family: 'DM Serif Display', Georgia, serif;
+}
+
 /* Selection styling */
 ::selection {
-  background: rgba(127, 90, 240, 0.2);
+  background: rgba(101, 86, 246, 0.2);
   color: inherit;
 }
 

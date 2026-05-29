@@ -138,14 +138,14 @@ export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }:
     <div className="min-h-screen flex items-center justify-center bg-surface px-4 py-8">
       <div className="w-full max-w-lg">
         {/* Header */}
-        <div className="text-center mb-8">
-          <div className="flex justify-center mb-4">
+        <div className="text-left mb-8">
+          <div className="flex justify-start mb-4">
             <img src={EINSTEIN_IMG} alt="Clarivio Learn" className="h-20 w-20 object-contain drop-shadow-md" />
           </div>
           <h1 className="text-2xl sm:text-3xl font-bold tracking-tight">
             {mode === "login" ? "Accedi a" : "Registrati su"} Clarivio<span className="text-viola">.</span>
           </h1>
-          <p className="text-sm text-foreground-muted mt-2 max-w-sm mx-auto">
+          <p className="text-sm text-foreground-muted mt-2 max-w-sm">
             {mode === "login"
               ? "Inserisci le tue credenziali per accedere alla piattaforma."
               : "Crea il tuo account per accedere alla formazione sull'AI generativa."}

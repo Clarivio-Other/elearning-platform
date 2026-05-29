@@ -50,7 +50,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const res = await apiRegister(data);
       setProfile(apiUserToProfile(res.user));
       // Fire-and-forget: salva su Supabase e manda email di benvenuto
-      fetch("/api/register", {
+      fetch("/api/register/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),

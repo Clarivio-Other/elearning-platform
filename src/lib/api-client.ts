@@ -100,7 +100,7 @@ export async function apiRegister(data: {
   marketingConsent: boolean;
   profilingConsent: boolean;
 }): Promise<AuthResponse> {
-  const res = await apiFetch<AuthResponse>("/api/auth/register", {
+  const res = await apiFetch<AuthResponse>("/api/auth/register/", {
     method: "POST",
     body: JSON.stringify(data),
   });
@@ -112,7 +112,7 @@ export async function apiLogin(
   email: string,
   password: string
 ): Promise<AuthResponse> {
-  const res = await apiFetch<AuthResponse>("/api/auth/login", {
+  const res = await apiFetch<AuthResponse>("/api/auth/login/", {
     method: "POST",
     body: JSON.stringify({ email, password }),
   });
@@ -121,7 +121,7 @@ export async function apiLogin(
 }
 
 export async function apiGoogleLogin(credential: string): Promise<AuthResponse> {
-  const res = await apiFetch<AuthResponse>("/api/auth/google", {
+  const res = await apiFetch<AuthResponse>("/api/auth/google/", {
     method: "POST",
     body: JSON.stringify({ credential }),
   });
@@ -130,13 +130,13 @@ export async function apiGoogleLogin(credential: string): Promise<AuthResponse> 
 }
 
 export async function apiGetMe(): Promise<{ user: ApiUser }> {
-  return apiFetch<{ user: ApiUser }>("/api/auth/me");
+  return apiFetch<{ user: ApiUser }>("/api/auth/me/");
 }
 
 export async function apiUpdateProfile(
   updates: Partial<ApiUser>
 ): Promise<{ user: ApiUser }> {
-  return apiFetch<{ user: ApiUser }>("/api/auth/me", {
+  return apiFetch<{ user: ApiUser }>("/api/auth/me/", {
     method: "PUT",
     body: JSON.stringify(updates),
   });
@@ -151,7 +151,7 @@ export function apiLogout(): void {
 import type { UserProgress } from "@/types";
 
 export async function apiLoadProgress(): Promise<{ progress: UserProgress }> {
-  return apiFetch<{ progress: UserProgress }>("/api/progress");
+  return apiFetch<{ progress: UserProgress }>("/api/progress/");
 }
 
 export async function apiSubmitQuiz(
@@ -162,14 +162,14 @@ export async function apiSubmitQuiz(
   isBestScore: boolean;
   progress: UserProgress;
 }> {
-  return apiFetch("/api/progress", {
+  return apiFetch("/api/progress/", {
     method: "POST",
     body: JSON.stringify({ moduleId, answers }),
   });
 }
 
 export async function apiResetProgress(): Promise<void> {
-  await apiFetch("/api/progress/reset", { method: "DELETE" });
+  await apiFetch("/api/progress/reset/", { method: "DELETE" });
 }
 
 // ─── Leaderboard API ───
@@ -189,5 +189,5 @@ export interface LeaderboardEntry {
 export async function apiGetLeaderboard(): Promise<{
   leaderboard: LeaderboardEntry[];
 }> {
-  return apiFetch<{ leaderboard: LeaderboardEntry[] }>("/api/leaderboard");
+  return apiFetch<{ leaderboard: LeaderboardEntry[] }>("/api/leaderboard/");
 }

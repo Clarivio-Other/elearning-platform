@@ -1,9 +1,68 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { hashPassword, signToken } from "@/lib/auth";
+import { isDisposableEmail } from "@/lib/email-security";
+
+const REGISTER_WINDOW_MS = 15 * 60 * 1000;
+const REGISTER_MAX_REQUESTS = 12;
+
+type RegisterRateEntry = {
+  count: number;
+  windowStart: number;
+};
+
+const registerRateStore: Map<string, RegisterRateEntry> =
+  (globalThis as typeof globalThis & { __registerRateStore?: Map<string, RegisterRateEntry> }).__registerRateStore ??
+  new Map<string, RegisterRateEntry>();
+
+(globalThis as typeof globalThis & { __registerRateStore?: Map<string, RegisterRateEntry> }).__registerRateStore = registerRateStore;
+
+function getClientIp(req: NextRequest): string {
+  const forwarded = req.headers.get("x-forwarded-for");
+  if (forwarded) {
+    return forwarded.split(",")[0].trim();
+  }
+  return req.headers.get("x-real-ip")?.trim() || "unknown";
+}
+
+function checkRegisterRateLimit(ip: string): { allowed: boolean; retryAfterSeconds?: number } {
+  const now = Date.now();
+  const current = registerRateStore.get(ip);
+
+  if (!current || now - current.windowStart >= REGISTER_WINDOW_MS) {
+    registerRateStore.set(ip, { count: 1, windowStart: now });
+    return { allowed: true };
+  }
+
+  if (current.count >= REGISTER_MAX_REQUESTS) {
+    const retryAfterSeconds = Math.ceil((current.windowStart + REGISTER_WINDOW_MS - now) / 1000);
+    return { allowed: false, retryAfterSeconds };
+  }
+
+  current.count += 1;
+  registerRateStore.set(ip, current);
+  return { allowed: true };
+}
 
 export async function POST(req: NextRequest) {
   try {
+    const ip = getClientIp(req);
+    const rateLimit = checkRegisterRateLimit(ip);
+    if (!rateLimit.allowed) {
+      return NextResponse.json(
+        {
+          error: "Troppi tentativi di registrazione. Riprova tra qualche minuto.",
+          retryAfterSeconds: rateLimit.retryAfterSeconds,
+        },
+        {
+          status: 429,
+          headers: {
+            "Retry-After": String(rateLimit.retryAfterSeconds ?? 60),
+          },
+        }
+      );
+    }
+
     const body = await req.json();
     const {
       nome,
@@ -36,6 +95,13 @@ export async function POST(req: NextRequest) {
     if (!privacyAccepted) {
       return NextResponse.json(
         { error: "Devi accettare l'informativa sulla privacy" },
+        { status: 400 }
+      );
+    }
+
+    if (isDisposableEmail(email)) {
+      return NextResponse.json(
+        { error: "Usa un indirizzo email personale o aziendale valido." },
         { status: 400 }
       );
     }

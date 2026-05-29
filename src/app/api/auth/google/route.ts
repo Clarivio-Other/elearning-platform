@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { signToken } from "@/lib/auth";
+import { isDisposableEmail } from "@/lib/email-security";
 
 interface GoogleTokenInfo {
   sub: string;
@@ -35,6 +36,13 @@ export async function POST(req: NextRequest) {
     }
 
     const email = info.email.toLowerCase();
+
+    if (isDisposableEmail(email)) {
+      return NextResponse.json(
+        { error: "Usa un indirizzo email personale o aziendale valido." },
+        { status: 400 }
+      );
+    }
 
     // Trova o crea l'utente
     let user = await prisma.user.findUnique({ where: { email } });

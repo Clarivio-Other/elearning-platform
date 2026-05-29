@@ -1313,10 +1313,10 @@ export default function DashboardPage() {
                       <img
                         src={profile.avatar}
                         alt="Avatar"
-                        className="h-28 w-28 rounded-full object-cover ring-4 ring-viola/20"
+                        className="h-28 w-28 flex-shrink-0 aspect-square rounded-full object-cover ring-4 ring-viola/20"
                       />
                     ) : (
-                      <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-viola to-viola/70 text-white text-4xl font-bold ring-4 ring-viola/20">
+                      <div className="flex h-28 w-28 flex-shrink-0 aspect-square items-center justify-center rounded-full bg-gradient-to-br from-viola to-viola/70 text-white text-4xl font-bold ring-4 ring-viola/20">
                         {profile.nome[0]}{profile.cognome[0]}
                       </div>
                     )}
@@ -1584,11 +1584,28 @@ export default function DashboardPage() {
                     ))}
                   </div>
 
-                  {/* Coming soon badge */}
+                  {/* Coming soon badge or webinar CTA */}
+                  {activeSection === "webinar" ? (
+                    <div className="mt-8 flex flex-col items-center gap-4">
+                      <a
+                        href="https://clarivio.it/webinar-compliance"
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center gap-2 rounded-full bg-viola px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:opacity-90 active:scale-95"
+                      >
+                        Iscriviti al prossimo webinar
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
+                          <path fillRule="evenodd" d="M3 10a.75.75 0 0 1 .75-.75h10.638L10.23 5.29a.75.75 0 1 1 1.04-1.08l5.5 5.25a.75.75 0 0 1 0 1.08l-5.5 5.25a.75.75 0 1 1-1.04-1.08l4.158-3.96H3.75A.75.75 0 0 1 3 10Z" clipRule="evenodd" />
+                        </svg>
+                      </a>
+                      <span className="text-xs text-foreground-muted">10 giugno · ore 17:00 · Live</span>
+                    </div>
+                  ) : (
                   <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-viola/10 px-5 py-2.5 text-sm font-medium text-viola">
                     <div className="h-2 w-2 rounded-full bg-viola animate-pulse" />
                     Prossimamente
                   </div>
+                  )}
                 </div>
               </div>
             )}
