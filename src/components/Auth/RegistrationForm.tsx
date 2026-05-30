@@ -99,7 +99,7 @@ export default function RegistrationForm({ onRegister }: RegistrationFormProps) 
         {/* Form Card */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white rounded-2xl border border-border shadow-lg shadow-black/5 p-6 sm:p-8 space-y-5"
+          className="bg-white rounded-2xl border border-border p-6 sm:p-8 space-y-5"
         >
           {/* Nome + Cognome */}
           <div className="grid sm:grid-cols-2 gap-4">
@@ -266,7 +266,7 @@ export default function RegistrationForm({ onRegister }: RegistrationFormProps) 
           {/* Submit */}
           <button
             type="submit"
-            className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-all hover:bg-viola-light hover:shadow-lg hover:shadow-viola/20 active:scale-[0.98] cursor-pointer"
+            className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-colors hover:bg-viola-dark active:scale-[0.98] cursor-pointer"
           >
             Accedi alla piattaforma
           </button>

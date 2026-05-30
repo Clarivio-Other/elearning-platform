@@ -163,7 +163,7 @@ export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }:
         {mode === "login" && (
           <form
             onSubmit={handleLoginSubmit}
-            className="bg-white rounded-2xl border border-border shadow-lg shadow-black/5 p-6 sm:p-8 space-y-5"
+            className="bg-white rounded-2xl border border-border p-6 sm:p-8 space-y-5"
           >
             <div>
               <label className="block text-xs font-semibold text-foreground mb-1.5">Email</label>
@@ -190,7 +190,7 @@ export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }:
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-all hover:bg-viola-light hover:shadow-lg hover:shadow-viola/20 active:scale-[0.98] cursor-pointer disabled:opacity-50"
+              className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-colors hover:bg-viola-dark active:scale-[0.98] cursor-pointer disabled:opacity-50"
             >
               {loading ? "Accesso in corso..." : "Accedi"}
             </button>
@@ -236,7 +236,7 @@ export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }:
         {mode === "register" && (
           <form
             onSubmit={handleRegisterSubmit}
-            className="bg-white rounded-2xl border border-border shadow-lg shadow-black/5 p-6 sm:p-8 space-y-5"
+            className="bg-white rounded-2xl border border-border p-6 sm:p-8 space-y-5"
           >
             {/* Nome + Cognome */}
             <div className="grid sm:grid-cols-2 gap-4">
@@ -349,7 +349,7 @@ export default function AuthForms({ onRegister, onLogin, onGoogleLogin, error }:
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-all hover:bg-viola-light hover:shadow-lg hover:shadow-viola/20 active:scale-[0.98] cursor-pointer disabled:opacity-50"
+              className="w-full rounded-xl bg-viola text-white font-semibold py-3 text-sm transition-colors hover:bg-viola-dark active:scale-[0.98] cursor-pointer disabled:opacity-50"
             >
               {loading ? "Registrazione in corso..." : "Crea il tuo account"}
             </button>

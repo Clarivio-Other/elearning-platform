@@ -14,43 +14,43 @@ const typeConfig: Record<
 > = {
   book: {
     label: "Libro",
-    color: "text-amber-700",
-    bgColor: "bg-amber-50",
-    accentColor: "#d97706",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
+    accentColor: "#DDE5F0",
     icon: thIcon("book"),
   },
   pdf: {
     label: "PDF",
-    color: "text-red-600",
-    bgColor: "bg-red-50",
-    accentColor: "#dc2626",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
+    accentColor: "#DDE5F0",
     icon: thIcon("novel"),
   },
   link: {
     label: "Link",
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-    accentColor: "#3b82f6",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
+    accentColor: "#DDE5F0",
     icon: thIcon("desktop"),
   },
   video: {
     label: "Video",
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
-    accentColor: "#9333ea",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
+    accentColor: "#DDE5F0",
     icon: thIcon("video"),
   },
   tool: {
     label: "Tool",
-    color: "text-green-600",
-    bgColor: "bg-green-50",
-    accentColor: "#16a34a",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
+    accentColor: "#DDE5F0",
     icon: thIcon("toolbox"),
   },
   doc: {
     label: "Documento",
-    color: "text-slate-600",
-    bgColor: "bg-slate-50",
+    color: "text-foreground-muted",
+    bgColor: "bg-surface-alt",
     accentColor: "#64748b",
     icon: thIcon("open-book"),
   },
@@ -128,7 +128,7 @@ export default function ResourceViewer({
               onClick={() => setActiveFilter("all")}
               className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                 activeFilter === "all"
-                  ? "bg-viola text-white shadow-sm"
+                  ? "bg-viola text-white"
                   : "bg-surface border border-border text-foreground-muted hover:border-viola/30"
               }`}
             >
@@ -143,7 +143,7 @@ export default function ResourceViewer({
                   onClick={() => setActiveFilter(type)}
                   className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-all cursor-pointer ${
                     activeFilter === type
-                      ? "bg-viola text-white shadow-sm"
+                      ? "bg-viola text-white"
                       : "bg-surface border border-border text-foreground-muted hover:border-viola/30"
                   }`}
                 >
@@ -214,7 +214,7 @@ function ResourceCard({ resource }: { resource: Resource }) {
     <Card
       className={`p-0 overflow-hidden transition-all group ${
         isActionable
-          ? "cursor-pointer hover:border-viola/50 hover:shadow-lg hover:-translate-y-0.5"
+          ? "cursor-pointer hover:border-viola/50 hover:bg-surface-alt"
           : ""
       }`}
       onClick={isActionable ? handleClick : undefined}

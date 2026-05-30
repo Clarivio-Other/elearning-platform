@@ -15,25 +15,35 @@ html {
   --color-surface-alt: #F8FAFF;
   --color-border: #DDE5F0;
   --color-border-strong: #C5D3E5;
-  --color-success: #00d294;
-  --color-danger: #dc2626;
-  --color-warning: #f99c00;
+  --color-success: #0E8A4F;
+  --color-danger: #B42318;
+  --color-warning: #854D0E;
   --color-foreground: #0F172A;
   --color-foreground-muted: #64748B;
-  --color-accent-green: #00E5A0;
 }
 
 body {
   background: var(--color-surface);
   color: var(--color-foreground);
   font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Heading font */
-h1, h2, h3 {
+/* Typographic hierarchy: serif for voice, sans for structure */
+h1, h2 {
   font-family: 'DM Serif Display', Georgia, serif;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+}
+
+body h3,
+body h4,
+body h5,
+body h6 {
+  font-family: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  line-height: 1.25;
 }
 
 /* Selection styling */
@@ -134,7 +144,7 @@ h1, h2, h3 {
   min-width: 180px;
   max-width: 260px;
   width: max-content;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 10px rgba(15, 23, 42, 0.08);
   text-align: left;
   pointer-events: none;
   white-space: normal;

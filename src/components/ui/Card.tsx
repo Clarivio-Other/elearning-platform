@@ -15,8 +15,8 @@ export default function Card({
   return (
     <div
       {...props}
-      className={`rounded-2xl border border-border bg-white shadow-sm
-        ${hoverable ? "cursor-pointer transition-all duration-300 hover:border-viola/50 hover:shadow-lg hover:shadow-viola/10 hover:-translate-y-0.5" : ""}
+      className={`rounded-2xl border border-border bg-white
+        ${hoverable ? "cursor-pointer transition-colors duration-200 hover:border-viola/40 hover:bg-surface-alt" : ""}
         ${className}`}
     >
       {children}

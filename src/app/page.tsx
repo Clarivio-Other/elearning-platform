@@ -516,7 +516,7 @@ export default function DashboardPage() {
       {/* ══════ MOBILE OVERLAY ══════ */}
       {sidebarOpen && (
         <div
-          className="fixed inset-0 bg-black/30 z-40 lg:hidden backdrop-blur-sm"
+          className="fixed inset-0 bg-slate-950/20 z-40 lg:hidden"
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -524,7 +524,7 @@ export default function DashboardPage() {
       {/* ══════ SIDEBAR ══════ */}
       <aside
         className={`
-          fixed top-0 left-0 h-full z-50 bg-white border border-border/80 rounded-r-3xl shadow-[0_8px_30px_rgba(15,23,42,0.08)] overflow-hidden
+          fixed top-0 left-0 h-full z-50 bg-white border border-border rounded-r-[28px] overflow-hidden
           flex flex-col transition-all duration-300 ease-in-out
           ${sidebarOpen ? "translate-x-0" : "-translate-x-full"}
           lg:translate-x-0 lg:sticky lg:top-0 lg:h-screen
@@ -597,6 +597,17 @@ export default function DashboardPage() {
             <span className={`${sidebarCollapsed ? "lg:hidden" : ""}`}>Reset progresso</span>
           </button>
 
+          {profile.isAdmin && (
+            <button
+              onClick={() => router.push("/admin/users")}
+              title={sidebarCollapsed ? "Admin utenti" : undefined}
+              className={`flex items-center gap-2 w-full rounded-xl px-3 py-2 text-xs text-foreground-muted hover:bg-viola/10 hover:text-viola transition-colors cursor-pointer ${sidebarCollapsed ? "lg:justify-center lg:px-2" : ""}`}
+            >
+              <ChevronRight className="h-4 w-4 shrink-0" />
+              <span className={`${sidebarCollapsed ? "lg:hidden" : ""}`}>Admin utenti</span>
+            </button>
+          )}
+
           {/* Logout */}
           <button
             onClick={logout}
@@ -612,7 +623,7 @@ export default function DashboardPage() {
       {/* ══════ MAIN CONTENT ══════ */}
       <main className="flex-1 min-w-0">
         {/* Mobile top bar */}
-        <div className="sticky top-0 z-30 bg-white/80 backdrop-blur-md border-b border-border px-4 py-3 flex items-center gap-3 lg:hidden">
+        <div className="sticky top-0 z-30 bg-white border-b border-border px-4 py-3 flex items-center gap-3 lg:hidden">
           <button onClick={() => setSidebarOpen(true)} className="cursor-pointer text-foreground">
             <Menu className="h-5 w-5" />
           </button>
@@ -630,9 +641,9 @@ export default function DashboardPage() {
               <div className="space-y-6 sm:space-y-8">
 
                 {/* ── Motivational Quote ── */}
-                <div className="flex items-start gap-3 rounded-2xl bg-gradient-to-r from-viola/5 to-transparent p-4 sm:p-5">
+                <div className="flex items-start gap-3 rounded-2xl border border-border bg-white p-4 sm:p-5">
                   <img src="/icons/pen.png" alt="" className="h-6 w-6 object-contain shrink-0 mt-0.5" />
-                  <p className="text-sm sm:text-base italic text-foreground-muted leading-relaxed" style={{ fontFamily: "'Newsreader', serif" }}>
+                  <p className="text-sm sm:text-base italic text-foreground-muted leading-relaxed" style={{ fontFamily: "'DM Serif Display', Georgia, serif" }}>
                     &ldquo;{todayQuote}&rdquo;
                   </p>
                 </div>
@@ -641,19 +652,17 @@ export default function DashboardPage() {
                 {nextModule && (
                   <div
                     onClick={() => router.push(`/modulo/${nextModule.id}`)}
-                    className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-viola to-viola-light p-5 sm:p-6 text-white cursor-pointer hover:shadow-xl hover:shadow-viola/20 transition-all hover:-translate-y-0.5"
+                    className="relative overflow-hidden rounded-2xl border border-border bg-white p-5 sm:p-6 text-foreground cursor-pointer transition-colors hover:border-viola/40 hover:bg-surface-alt"
                   >
                     <div className="flex items-center gap-4">
-                      <img src={nextModule.icon} alt="" className="h-14 w-14 sm:h-16 sm:w-16 object-contain brightness-0 invert opacity-90" />
+                      <img src={nextModule.icon} alt="" className="h-14 w-14 sm:h-16 sm:w-16 object-contain" />
                       <div className="flex-1 min-w-0">
-                        <span className="text-xs font-medium text-white/70 uppercase tracking-wider">Continua da qui</span>
+                        <span className="text-xs font-medium text-foreground-muted uppercase tracking-wider">Continua da qui</span>
                         <h2 className="text-lg sm:text-xl font-bold leading-tight mt-0.5 truncate">{nextModule.title}</h2>
-                        <p className="text-xs sm:text-sm text-white/80 line-clamp-1 mt-1">{nextModule.description}</p>
+                        <p className="text-xs sm:text-sm text-foreground-muted line-clamp-1 mt-1">{nextModule.description}</p>
                       </div>
-                      <ChevronRight className="h-6 w-6 text-white/60 shrink-0" />
+                      <ChevronRight className="h-6 w-6 text-foreground-muted shrink-0" />
                     </div>
-                    {/* Decorative circle */}
-                    <div className="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-white/10" />
                   </div>
                 )}
 
@@ -670,21 +679,21 @@ export default function DashboardPage() {
                     <div className="flex justify-center mb-1">
                       <img src="/icons/brain.png" alt="Crediti XP" className="h-8 w-8 sm:h-12 sm:w-12 object-contain" />
                     </div>
-                    <div className="text-base sm:text-xl font-bold text-success">{progress.totalCredits}</div>
+                    <div className="text-base sm:text-xl font-bold text-foreground">{progress.totalCredits}</div>
                     <div className="text-[9px] sm:text-xs text-foreground-muted">XP</div>
                   </Card>
                   <Card className="p-2.5 sm:p-4 text-center">
                     <div className="flex justify-center mb-1">
                       <img src="/icons/target.png" alt="Completati" className="h-8 w-8 sm:h-12 sm:w-12 object-contain" />
                     </div>
-                    <div className="text-base sm:text-xl font-bold text-warning">{completedCount}/{modules.length}</div>
+                    <div className="text-base sm:text-xl font-bold text-foreground">{completedCount}/{modules.length}</div>
                     <div className="text-[9px] sm:text-xs text-foreground-muted">Completati</div>
                   </Card>
                   <Card className="p-2.5 sm:p-4 text-center">
                     <div className="flex justify-center mb-1">
                       <img src="/icons/medal.png" alt="Streak" className={`h-8 w-8 sm:h-12 sm:w-12 object-contain ${progress.streak === 0 ? "grayscale opacity-30" : ""}`} />
                     </div>
-                    <div className={`text-base sm:text-xl font-bold ${progress.streak > 0 ? "text-orange-500" : "text-foreground-muted"}`}>{progress.streak}</div>
+                    <div className={`text-base sm:text-xl font-bold ${progress.streak > 0 ? "text-viola-dark" : "text-foreground-muted"}`}>{progress.streak}</div>
                     <div className="text-[9px] sm:text-xs text-foreground-muted">Streak</div>
                   </Card>
                 </div>
@@ -694,13 +703,13 @@ export default function DashboardPage() {
                   <div className="flex items-center gap-3 mb-3">
                     <img src="/icons/target.png" alt="" className="h-6 w-6 object-contain" />
                     <h2 className="font-semibold text-sm sm:text-base">Obiettivo Settimanale</h2>
-                    <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${thisWeekCompletions >= weeklyGoal ? "bg-success/20 text-success" : "bg-warning/20 text-warning"}`}>
+                    <span className={`ml-auto text-xs font-bold px-2 py-0.5 rounded-full ${thisWeekCompletions >= weeklyGoal ? "bg-viola-light text-viola-dark" : "bg-surface-alt text-foreground-muted"}`}>
                       {thisWeekCompletions >= weeklyGoal ? "Completato!" : `${thisWeekCompletions}/${weeklyGoal}`}
                     </span>
                   </div>
                   <div className="h-2 w-full rounded-full bg-surface-alt overflow-hidden">
                     <div
-                      className={`h-full rounded-full transition-[width] duration-700 ${thisWeekCompletions >= weeklyGoal ? "bg-success" : "bg-gradient-to-r from-viola to-viola-light"}`}
+                      className={`h-full rounded-full transition-[width] duration-500 bg-viola`}
                       style={{ width: `${Math.min(100, (thisWeekCompletions / weeklyGoal) * 100)}%` }}
                     />
                   </div>
@@ -729,7 +738,7 @@ export default function DashboardPage() {
                       </div>
                       <div className="h-1.5 w-full rounded-full bg-surface-alt overflow-hidden">
                         <div
-                          className="h-full rounded-full bg-gradient-to-r from-warning to-warning/70 transition-[width] duration-700"
+                          className="h-full rounded-full bg-viola-dark transition-[width] duration-500"
                           style={{ width: `${(creditsInLevel / creditsForNextLevel) * 100}%` }}
                         />
                       </div>
@@ -783,17 +792,17 @@ export default function DashboardPage() {
                     {/* Strongest / Weakest */}
                     <div className="grid grid-cols-2 gap-3 pt-2">
                       {strongestModule && (
-                        <div className="rounded-xl bg-success/5 p-3">
-                          <span className="text-[10px] uppercase tracking-wider text-success font-medium">Punto forte</span>
+                        <div className="rounded-xl border border-border bg-white p-3">
+                          <span className="text-[10px] uppercase tracking-wider text-viola-dark font-medium">Punto forte</span>
                           <p className="text-xs font-semibold mt-1 line-clamp-1">{strongestModule.title}</p>
-                          <p className="text-xs text-success font-bold">{Math.round(strongestModule.pct)}%</p>
+                          <p className="text-xs text-viola-dark font-bold">{Math.round(strongestModule.pct)}%</p>
                         </div>
                       )}
                       {weakestModule && weakestModule.title !== strongestModule?.title && (
-                        <div className="rounded-xl bg-warning/5 p-3">
-                          <span className="text-[10px] uppercase tracking-wider text-warning font-medium">Da migliorare</span>
+                        <div className="rounded-xl border border-border bg-surface p-3">
+                          <span className="text-[10px] uppercase tracking-wider text-foreground-muted font-medium">Da migliorare</span>
                           <p className="text-xs font-semibold mt-1 line-clamp-1">{weakestModule.title}</p>
-                          <p className="text-xs text-warning font-bold">{Math.round(weakestModule.pct)}%</p>
+                          <p className="text-xs text-foreground-muted font-bold">{Math.round(weakestModule.pct)}%</p>
                         </div>
                       )}
                     </div>
@@ -909,7 +918,7 @@ export default function DashboardPage() {
                       </span>
                     )}
                     {progress.streak >= 3 && (
-                      <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-500/10 px-3 py-1 text-xs font-medium text-orange-500">
+                      <span className="inline-flex items-center gap-1.5 rounded-full bg-viola-light px-3 py-1 text-xs font-medium text-viola-dark">
                         <img src="/icons/medal.png" alt="" className="h-4 w-4 object-contain" /> Streak 3+ giorni
                       </span>
                     )}
@@ -928,8 +937,8 @@ export default function DashboardPage() {
             {activeSection === "toolkit" && (
               <div className="space-y-6">
                 {/* Header */}
-                <div className="text-center sm:text-left">
-                  <div className="flex items-center gap-3 mb-2 justify-center sm:justify-start">
+                <div className="text-left">
+                  <div className="flex items-center gap-3 mb-2 justify-start">
                     <img src="/icons/gear.png" alt="" className="h-8 w-8 object-contain" />
                     <h2 className="text-xl sm:text-2xl font-bold">Libreria Prompt</h2>
                   </div>
@@ -946,7 +955,7 @@ export default function DashboardPage() {
                       onClick={() => setSelectedPromptCat(i)}
                       className={`flex items-center gap-2 rounded-xl px-3 py-2 text-xs sm:text-sm font-medium transition-all ${
                         selectedPromptCat === i
-                          ? "bg-viola text-white shadow-sm"
+                          ? "bg-viola text-white"
                           : "bg-surface text-foreground-muted hover:bg-surface-alt"
                       }`}
                     >
@@ -1026,28 +1035,28 @@ export default function DashboardPage() {
 
                 {/* ── Quick Stats ── */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-                  <div className="rounded-2xl bg-green-50 border border-green-200/60 p-4 flex items-center gap-3 shadow-sm">
+                  <div className="rounded-2xl bg-white border border-border p-4 flex items-center gap-3">
                     <img src="/icons/thiings/toolbox.png" alt="" className="w-11 h-11 object-contain shrink-0" />
                     <div>
-                      <p className="text-2xl font-bold text-green-700">
+                      <p className="text-2xl font-bold text-viola">
                         {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "tool").length, 0)}
                       </p>
                       <p className="text-xs text-foreground-muted mt-0.5">Tool AI</p>
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-blue-50 border border-blue-200/60 p-4 flex items-center gap-3 shadow-sm">
+                  <div className="rounded-2xl bg-white border border-border p-4 flex items-center gap-3">
                     <img src="/icons/thiings/desktop.png" alt="" className="w-11 h-11 object-contain shrink-0" />
                     <div>
-                      <p className="text-2xl font-bold text-blue-700">
+                      <p className="text-2xl font-bold text-viola">
                         {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "link").length, 0)}
                       </p>
                       <p className="text-xs text-foreground-muted mt-0.5">Link e Corsi</p>
                     </div>
                   </div>
-                  <div className="rounded-2xl bg-purple-50 border border-purple-200/60 p-4 flex items-center gap-3 shadow-sm">
+                  <div className="rounded-2xl bg-white border border-border p-4 flex items-center gap-3">
                     <img src="/icons/thiings/video.png" alt="" className="w-11 h-11 object-contain shrink-0" />
                     <div>
-                      <p className="text-2xl font-bold text-purple-700">
+                      <p className="text-2xl font-bold text-viola">
                         {modules.reduce((sum, m) => sum + m.resources.filter(r => r.type === "video").length, 0)}
                       </p>
                       <p className="text-xs text-foreground-muted mt-0.5">Video</p>
@@ -1071,7 +1080,7 @@ export default function DashboardPage() {
                           href={video.url}
                           target="_blank"
                           rel="noopener noreferrer"
-                          className="rounded-xl border border-border bg-white p-4 hover:border-viola/40 hover:bg-viola/5 transition-all group"
+                          className="rounded-xl border border-border bg-white p-4 hover:border-viola/40 hover:bg-surface-alt transition-colors group"
                         >
                           <div className="flex items-start gap-3">
                             <img src="/icons/thiings/video.png" alt="" className="w-10 h-10 object-contain shrink-0" />
@@ -1163,7 +1172,7 @@ export default function DashboardPage() {
                         onClick={() => setSelectedResourceCat(i)}
                         className={`flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs sm:text-sm font-medium transition-all cursor-pointer ${
                           selectedResourceCat === i
-                            ? "bg-viola text-white shadow-sm"
+                            ? "bg-viola text-white"
                             : "bg-surface border border-border text-foreground-muted hover:bg-surface-alt hover:border-viola/30"
                         }`}
                       >
@@ -1313,14 +1322,14 @@ export default function DashboardPage() {
                       <img
                         src={profile.avatar}
                         alt="Avatar"
-                        className="h-28 w-28 flex-shrink-0 aspect-square rounded-full object-cover ring-4 ring-viola/20"
+                        className="h-28 w-28 flex-shrink-0 aspect-square rounded-full object-cover border border-border"
                       />
                     ) : (
-                      <div className="flex h-28 w-28 flex-shrink-0 aspect-square items-center justify-center rounded-full bg-gradient-to-br from-viola to-viola/70 text-white text-4xl font-bold ring-4 ring-viola/20">
+                      <div className="flex h-28 w-28 flex-shrink-0 aspect-square items-center justify-center rounded-full bg-viola text-white text-4xl font-bold">
                         {profile.nome[0]}{profile.cognome[0]}
                       </div>
                     )}
-                    <label className="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center bg-viola rounded-full cursor-pointer hover:bg-viola/90 transition-colors shadow-lg">
+                    <label className="absolute bottom-0 right-0 flex h-10 w-10 items-center justify-center bg-viola rounded-full cursor-pointer hover:bg-viola-dark transition-colors">
                       <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
@@ -1508,17 +1517,17 @@ export default function DashboardPage() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between py-2">
                       <span className="text-sm text-foreground-muted">Privacy policy</span>
-                      <span className="text-sm text-green-600 font-medium">✓ Accettata</span>
+                      <span className="text-sm text-success font-medium">✓ Accettata</span>
                     </div>
                     <div className="flex items-center justify-between py-2">
                       <span className="text-sm text-foreground-muted">Comunicazioni marketing</span>
-                      <span className={`text-sm font-medium ${profile.marketingConsent ? "text-green-600" : "text-foreground-muted"}`}>
+                      <span className={`text-sm font-medium ${profile.marketingConsent ? "text-success" : "text-foreground-muted"}`}>
                         {profile.marketingConsent ? "✓ Accettato" : "Non accettato"}
                       </span>
                     </div>
                     <div className="flex items-center justify-between py-2">
                       <span className="text-sm text-foreground-muted">Profilazione</span>
-                      <span className={`text-sm font-medium ${profile.profilingConsent ? "text-green-600" : "text-foreground-muted"}`}>
+                      <span className={`text-sm font-medium ${profile.profilingConsent ? "text-success" : "text-foreground-muted"}`}>
                         {profile.profilingConsent ? "✓ Accettata" : "Non accettata"}
                       </span>
                     </div>
@@ -1558,7 +1567,7 @@ export default function DashboardPage() {
               <div className="space-y-6">
                 <div className="text-center py-8 sm:py-12">
                   {/* Lock badge */}
-                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-gradient-to-br from-viola/10 to-viola/5 ring-1 ring-viola/20">
+                  <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-3xl bg-surface-alt border border-border">
                     <img src="/icons/shield.png" alt="" className="h-10 w-10 object-contain opacity-60" />
                   </div>
 
@@ -1591,7 +1600,7 @@ export default function DashboardPage() {
                         href="https://clarivio.it/webinar-compliance"
                         target="_blank"
                         rel="noreferrer"
-                        className="inline-flex items-center gap-2 rounded-full bg-viola px-6 py-3 text-sm font-semibold text-white shadow-sm transition-all hover:opacity-90 active:scale-95"
+                        className="inline-flex items-center gap-2 rounded-full bg-viola px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-viola-dark active:scale-95"
                       >
                         Iscriviti al prossimo webinar
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4">
@@ -1601,8 +1610,8 @@ export default function DashboardPage() {
                       <span className="text-xs text-foreground-muted">10 giugno · ore 17:00 · Live</span>
                     </div>
                   ) : (
-                  <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-viola/10 px-5 py-2.5 text-sm font-medium text-viola">
-                    <div className="h-2 w-2 rounded-full bg-viola animate-pulse" />
+                  <div className="mt-8 inline-flex items-center gap-2 rounded-full bg-viola-light px-5 py-2.5 text-sm font-medium text-viola-dark">
+                    <div className="h-2 w-2 rounded-full bg-viola" />
                     Prossimamente
                   </div>
                   )}

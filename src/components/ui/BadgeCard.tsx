@@ -12,7 +12,7 @@ export default function BadgeCard({ badge }: BadgeProps) {
       className={`flex flex-col items-center gap-1.5 sm:gap-2 rounded-2xl border p-3 sm:p-4 text-center transition-all duration-300
         ${
           unlocked
-            ? "border-viola/50 bg-viola/5 shadow-lg shadow-viola/10"
+            ? "border-viola/30 bg-surface-alt"
             : "border-border bg-surface opacity-40"
         }`}
     >

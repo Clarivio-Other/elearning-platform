@@ -13,6 +13,7 @@
     "db:studio": "prisma studio"
   },
   "dependencies": {
+    "@prisma/adapter-pg": "^6.19.3",
     "@prisma/client": "^6.0.0",
     "@react-oauth/google": "^0.13.5",
     "@supabase/supabase-js": "^2.106.0",

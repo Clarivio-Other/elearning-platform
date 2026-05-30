@@ -30,7 +30,7 @@ export async function GET() {
       avatar: user.avatar,
       totalCredits: user.totalCredits,
       streak: user.streak,
-      modulesCompleted: user.moduleProgress.length,
+      modulesCompleted: user.moduleProgress?.length ?? 0,
       level: Math.floor(user.totalCredits / 50) + 1,
     }));
 

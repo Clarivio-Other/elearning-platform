@@ -13,11 +13,11 @@ const CATEGORY_LABELS: Record<GlossaryTerm["category"], string> = {
 };
 
 const CATEGORY_COLORS: Record<GlossaryTerm["category"], string> = {
-  fondamenti: "bg-blue-50 text-blue-700 border-blue-200",
-  modelli: "bg-purple-50 text-purple-700 border-purple-200",
-  prompt: "bg-orange-50 text-orange-700 border-orange-200",
-  tecnica: "bg-green-50 text-green-700 border-green-200",
-  applicazioni: "bg-rose-50 text-rose-700 border-rose-200",
+  fondamenti: "bg-surface-alt text-foreground-muted border-border",
+  modelli: "bg-surface-alt text-foreground-muted border-border",
+  prompt: "bg-surface-alt text-foreground-muted border-border",
+  tecnica: "bg-surface-alt text-foreground-muted border-border",
+  applicazioni: "bg-surface-alt text-foreground-muted border-border",
 };
 
 interface GlossaryPanelProps {
@@ -73,10 +73,10 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
         className={`
           fixed bottom-6 right-6 z-40
           flex items-center gap-2
-          rounded-full px-4 py-3 shadow-lg
+          rounded-full px-4 py-3 border border-border
           transition-all duration-200
           ${count > 0
-            ? "bg-amber-400 text-white hover:bg-amber-500 hover:shadow-xl hover:scale-105"
+            ? "bg-viola text-white hover:bg-viola-dark hover:scale-105"
             : "bg-white border border-border text-foreground-muted hover:bg-surface hover:scale-105"}
         `}
       >
@@ -89,7 +89,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
       {/* ── Backdrop ── */}
       {open && (
         <div
-          className="fixed inset-0 z-40 bg-black/20 backdrop-blur-sm"
+          className="fixed inset-0 z-40 bg-slate-950/20"
           onClick={() => setOpen(false)}
         />
       )}
@@ -98,21 +98,21 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
       <div
         className={`
           fixed right-0 top-0 bottom-0 z-50
-          w-full max-w-sm bg-white shadow-2xl border-l border-border
+          w-full max-w-sm bg-white border-l border-border
           flex flex-col
           transition-transform duration-300 ease-in-out
           ${open ? "translate-x-0" : "translate-x-full"}
         `}
       >
         {/* Header */}
-        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border bg-amber-50">
+        <div className="flex items-center justify-between gap-3 px-5 py-4 border-b border-border bg-surface-alt">
           <div className="flex items-center gap-2">
-            <Lightbulb className="h-5 w-5 text-amber-500 fill-amber-200" />
+            <Lightbulb className="h-5 w-5 text-viola" />
             <h2 className="font-bold text-base text-foreground">Glossario</h2>
           </div>
           <button
             onClick={() => setOpen(false)}
-            className="p-1.5 rounded-lg hover:bg-amber-100 text-foreground-muted hover:text-foreground transition-colors cursor-pointer"
+            className="p-1.5 rounded-lg hover:bg-surface text-foreground-muted hover:text-foreground transition-colors cursor-pointer"
           >
             <X className="h-4 w-4" />
           </button>
@@ -123,7 +123,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
           <button
             onClick={() => setShowAll(false)}
             className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
-              !showAll ? "bg-amber-400 text-white shadow-sm" : "bg-surface text-foreground-muted hover:bg-surface-alt"
+              !showAll ? "bg-viola text-white" : "bg-surface text-foreground-muted hover:bg-surface-alt"
             }`}
           >
             Questa sezione ({sectionTerms.length})
@@ -131,7 +131,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
           <button
             onClick={() => setShowAll(true)}
             className={`flex-1 rounded-xl py-2 text-xs font-semibold transition-all ${
-              showAll ? "bg-viola text-white shadow-sm" : "bg-surface text-foreground-muted hover:bg-surface-alt"
+              showAll ? "bg-viola text-white" : "bg-surface text-foreground-muted hover:bg-surface-alt"
             }`}
           >
             Tutto il modulo ({moduleTerms.length})
@@ -145,7 +145,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
             placeholder="Cerca un termine…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm placeholder:text-foreground-muted/60 focus:outline-none focus:ring-2 focus:ring-amber-300/50 focus:border-amber-400 transition-all"
+            className="w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm placeholder:text-foreground-muted/60 focus:outline-none focus:ring-2 focus:ring-viola/20 focus:border-viola transition-all"
           />
         </div>
 
@@ -153,7 +153,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
         <div className="flex-1 overflow-y-auto px-5 pb-6 space-y-3">
           {filtered.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-12 text-center">
-              <Lightbulb className="h-10 w-10 text-amber-200 mb-3" />
+              <Lightbulb className="h-10 w-10 text-foreground-muted/30 mb-3" />
               <p className="text-sm text-foreground-muted font-medium">
                 {search ? "Nessun termine trovato" : "Nessun termine chiave in questa sezione"}
               </p>
@@ -170,7 +170,7 @@ export default function GlossaryPanel({ content, fullContent }: GlossaryPanelPro
             filtered.map((t) => (
               <div
                 key={t.term}
-                className="rounded-2xl border border-border bg-white p-4 space-y-2 shadow-sm"
+                className="rounded-2xl border border-border bg-white p-4 space-y-2"
               >
                 <div className="flex items-start justify-between gap-2">
                   <h3 className="font-bold text-sm text-foreground leading-snug">{t.term}</h3>

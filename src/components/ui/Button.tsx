@@ -10,9 +10,9 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const variants = {
   primary:
-    "bg-viola hover:bg-viola-dark text-white shadow-lg shadow-viola/25 hover:shadow-viola/40",
+    "bg-viola hover:bg-viola-dark text-white",
   secondary:
-    "bg-surface hover:bg-surface-alt text-foreground border border-border",
+    "bg-white hover:bg-surface-alt text-foreground border border-border",
   ghost:
     "bg-transparent hover:bg-surface text-foreground-muted hover:text-foreground",
 };
@@ -32,8 +32,8 @@ export default function Button({
 }: ButtonProps) {
   return (
     <button
-      className={`inline-flex items-center justify-center gap-2 rounded-xl font-medium
-        transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
+      className={`inline-flex items-center justify-center gap-2 rounded-xl border border-transparent font-medium
+        transition-colors duration-200 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed
         ${variants[variant]} ${sizes[size]} ${className}`}
       {...props}
     >

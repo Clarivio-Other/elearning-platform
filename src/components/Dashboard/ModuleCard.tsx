@@ -35,9 +35,9 @@ export default function ModuleCard({ module, index, isLast = false }: ModuleCard
         <div
           className={`flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-2xl text-sm font-bold transition-all
             ${completed
-              ? "bg-success text-white shadow-md shadow-success/25"
+              ? "bg-viola-light text-viola-dark"
               : unlocked
-                ? "bg-viola text-white shadow-md shadow-viola/25 ring-4 ring-viola/10"
+                ? "bg-viola text-white"
                 : "bg-surface-alt text-foreground-muted"
             }`}
         >
@@ -61,10 +61,10 @@ export default function ModuleCard({ module, index, isLast = false }: ModuleCard
         onClick={handleClick}
         className={`flex-1 mb-3 rounded-2xl border p-4 sm:p-5 transition-all duration-300
           ${unlocked
-            ? "border-border bg-white cursor-pointer hover:border-viola/50 hover:shadow-lg hover:shadow-viola/10 hover:-translate-y-0.5"
+            ? "border-border bg-white cursor-pointer hover:border-viola/40 hover:bg-surface-alt"
             : "border-border/50 bg-surface opacity-60"
           }
-          ${completed ? "border-success/30" : ""}
+          ${completed ? "border-viola/30" : ""}
         `}
       >
         <div className="flex items-start gap-3 sm:gap-4">
@@ -83,7 +83,7 @@ export default function ModuleCard({ module, index, isLast = false }: ModuleCard
                 Modulo {index + 1}
               </span>
               {completed && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-success/20 text-success font-medium inline-flex items-center gap-1">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-viola-light text-viola-dark font-medium inline-flex items-center gap-1">
                   <img src="/icons/trophy.png" alt="" className="h-3 w-3 object-contain" />
                   {percent}%
                 </span>
@@ -117,7 +117,7 @@ export default function ModuleCard({ module, index, isLast = false }: ModuleCard
 
             {/* CTA hint for unlocked, not completed */}
             {unlocked && !completed && (
-              <div className="mt-3 flex items-center gap-1 text-xs font-medium text-viola">
+              <div className="mt-3 flex items-center gap-1 text-xs font-medium text-viola-dark">
                 <span>{score ? "Riprova il quiz" : "Inizia a studiare"}</span>
                 <ChevronRight className="h-3 w-3" />
               </div>
